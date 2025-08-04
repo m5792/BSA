@@ -545,6 +545,7 @@ table tr:hover {
   </select>
 
   <button onclick="printCertificate()" style="margin-bottom: 20px; padding: 8px 16px; font-size: 16px;">🖨️ Print Certificate</button>
+    <div id="lastTCNumber" style="margin: 10px 0; font-size: 18px; font-weight: bold; color: green;"></div>
 
   <div class="certificate"> <!-- TC certificate start-->
     <div class="headerTC">
@@ -737,6 +738,7 @@ setInterval(displayCurrentDateTime, 1000);
 <script>
 const allOptions = [
    { value: "All", text: "All Classes" },
+    { value: "Pre-Nursery", text: "PRE - NURSERY" },
   { value: "NURSERY - A", text: "NURSERY - A" },
   { value: "NURSERY - B", text: "NURSERY - B" },
   { value: "UKG - A", text: "UKG - A" },
@@ -1102,7 +1104,15 @@ brand.addEventListener('mouseleave', () => {
 <!-- यह एक नोट है, logo code stop -->
 
 
+
+
+
+
+
 <!-- यह एक नोट है, events Event script Start Heare -->
+
+<!-- यह एक नोट है, events Event script Start Heare -->
+
 
 
 <script>
@@ -1224,7 +1234,7 @@ function studentCLASStable() {
     const tableHead = document.getElementById("tableHeadSRldgr");
 
     const studentVouchers = [
-        "NURSERY - A", "NURSERY - B", "LKG - A", "LKG - B",
+       "PRE-NURSERY", "NURSERY - A", "NURSERY - B", "LKG - A", "LKG - B",
         "UKG - A", "UKG - B", "1ST", "2ND", "3RD", "4TH", "5TH", "6TH"
     ];
 
@@ -1238,13 +1248,13 @@ function studentCLASStable() {
                 <th>Mother Name</th><th>Date Of Birth</th><th>Roll No.</th><th>PEN No</th><th>Attendance</th>
             </tr>`;
         visibleIndexes = [0,1,2,3,4,5,6,7,36];
-    } else if (selectedVoucher === "BANK") {
+    } else if (selectedVoucher === "PRE-NURSERY") {
         headerHTML = `
             <tr style="background-color: green; color: white;">
-                <th>S No.</th><th>User</th><th>Voucher</th><th>Date</th><th>Ledger</th>
-                <th>Amount (Dr.)</th><th>Amount (Cr.)</th>
+                <th>ANo.</th><th>Class</th><th>Student Name</th><th>Father Name</th>
+                <th>Mother Name</th><th>Date Of Birth</th><th>Roll No.</th>
             </tr>`;
-        visibleIndexes = [0, 1, 2, 3, 12, 6, 7];
+        visibleIndexes = [0, 1, 2, 3,4,5,6];
     } else {
         visibleIndexes = [...Array(12).keys()];
     }
@@ -1371,7 +1381,7 @@ function showRegisterDetails(ano) {
                 <li><strong>Address:</strong> ${matched[9] || ""}</li>
                 <li><strong>PEN No:</strong> ${matched[10] || ""}</li>
                 <li><strong>Religion:</strong> ${matched[11] || ""} / ${matched[12] || ""}</li>
-                <li><strong>Status No:</strong> ${matched[14] || ""}</li>
+              
                 <li>
   <strong>Status:</strong>
   ${matched[14] === "R" ? "<span style='color: green;'>Regular</span>" 
@@ -1753,7 +1763,7 @@ if (["UKG", "UKG - A", "UKG - B"].includes(selectedClass)) {
 <td style="background-color: white ;text-align: left ; color: balck ;border: none;"><span style="color: black ;font-size:90%; font-weight: bold;"> MOTHER'S NAME: </span>${row[4]}</td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
-<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: BLACK ;font-size:90%; font-weight: bold;"> PEN No. ${row[7]}</span></td>
+<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: BLACK ;font-size:100%; font-weight: bold;"> Duplicate</span></td>
 </td>
 
 </tr>
@@ -2137,7 +2147,7 @@ if (["UKG", "UKG - A", "UKG - B"].includes(selectedClass)) {
 <td style="background-color: white ;text-align: left ; color: balck ;border: none;"><span style="color: black ;font-size:90%; font-weight: bold;"> MOTHER'S NAME: </span>${row[4]}</td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
-<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: BLACK ;font-size:90%; font-weight: bold;"> PEN No: ${row[7]}</span></td>
+<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: BLACK ;font-size:100%; font-weight: bold;"> Duplicate</span></td>
 </td>
 
 </tr>
@@ -2334,7 +2344,7 @@ if (["UKG", "UKG - A", "UKG - B"].includes(selectedClass)) {
 <td style="background-color: white ;text-align: left ; color: balck ;border: none;"><span style="color: black ;font-size:90%; font-weight: bold;"> MOTHER'S NAME: </span>${row[4]}</td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
-<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: black ;font-size:90%; font-weight: bold;"> PEN No: ${row[7]}</span></td>
+<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: black ;font-size:100%; font-weight: bold;"> Duplicate </span></td>
 </td>
 
 </tr>
@@ -2563,7 +2573,7 @@ if (["UKG", "UKG - A", "UKG - B"].includes(selectedClass)) {
 <td style="background-color: white ;text-align: left ; color: balck ;border: none;"><span style="color: black ;font-size:90%; font-weight: bold;"> MOTHER'S NAME: </span>${row[4]}</td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none;"></td>
-<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: black ;font-size:90%; font-weight: bold;"> PEN No: ${row[7]}</span></td>
+<td style="background-color: white ;text-align: center; color: balck ;border: none;"><span style="color: black ;font-size:100%; font-weight: bold;"> Duplicate </span></td>
 </td>
 
 </tr>
@@ -2934,6 +2944,8 @@ async function fetchTCdata() {
     option.textContent = row[0];
     dropdown.appendChild(option);
   });
+
+  getHighestTCNumber(); // Add this line fot last tc no
 }
 
 function generateTCTable(row) {
@@ -3097,6 +3109,27 @@ function printCertificate() {
     document.title = originalTitle;
   }, 1000);
 }
+
+
+
+// last tc no view
+function getHighestTCNumber() {
+  const tcNumbers = allData
+    .map(row => row[15])                    // Column "P" (index 15)
+    .filter(val => val && val.trim() !== "") // Ignore blank/null/undefined
+    .map(val => parseInt(val.trim(), 10))   // Convert to number
+    .filter(num => !isNaN(num));            // Only valid numbers
+
+  if (tcNumbers.length === 0) {
+    document.getElementById("lastTCNumber").textContent = "No TC numbers available.";
+    return;
+  }
+
+  const maxTC = Math.max(...tcNumbers);
+  document.getElementById("lastTCNumber").textContent = `Last Issued TC Number: ${maxTC}`;
+}
+//
+
 
 // Fetch on page load
 fetchTCdata();
