@@ -356,6 +356,15 @@ table tr:hover {
 
 
 
+<div id="section1b" class="section hidden" style="background-color: #01293c; padding: 10px; color: rgb(1, 40, 71); font-family: 'Segoe UI', sans-serif; box-shadow: 0 0 10px rgba(0,0,0,0.3); border-radius: 10px; margin: 10px auto; max-width: 100%;">
+<img style="width:320px; height:230px; align:center; border: 5px solid #013a3e;" src="https://babascholarsacademy.in/wp-content/uploads/2023/02/8503a649-210e-42d0-b319-1cf97ea98633-1024x681.jpg" />
+<img style="width:320px; height:230px; align:center; border: 5px solid #013a3e;" src="https://babascholarsacademy.in/wp-content/uploads/2023/02/IMG-20221112-WA0193.jpg" />
+<img style="width:320px; height:230px; align:center; border: 5px solid #013a3e;" src="https://babascholarsacademy.in/wp-content/uploads/2023/02/6529f90b-feae-401b-ad37-4fee3818010a-1-1024x681.jpg" />
+<img style="width:320px; height:230px; align:center; border: 5px solid #013a3e;" src="https://babascholarsacademy.in/wp-content/uploads/2023/02/IMG-20221112-WA0023.jpg" />
+<img style="width:320px; height:230px; align:center; border: 5px solid #013a3e;" src="https://babascholarsacademy.in/wp-content/uploads/2023/08/55ace655-c445-4899-9eed-1964e16621ff-1024x682.jpg" />
+<img style="width:320px; height:230px; align:center; border: 5px solid #013a3e;" src="https://babascholarsacademy.in/wp-content/uploads/2023/02/IMG_20230226_102344.jpg" />
+
+</div>
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 
@@ -3059,7 +3068,7 @@ function printCertificate() {
             margin: 4px;
             font-size: 15px;
           }
-          .titleTC {
+           .titleTC {
       text-align: center;
       font-size: 22px;
       font-weight: bold;
@@ -3114,20 +3123,30 @@ function printCertificate() {
 
 // last tc no view
 function getHighestTCNumber() {
-  const tcNumbers = allData
-    .map(row => row[15])                    // Column "P" (index 15)
-    .filter(val => val && val.trim() !== "") // Ignore blank/null/undefined
-    .map(val => parseInt(val.trim(), 10))   // Convert to number
-    .filter(num => !isNaN(num));            // Only valid numbers
+  const validRows = allData
+    .filter(row => row[15] && row[15].trim() !== "") // Filter rows with non-empty TC number
+    .map(row => ({
+      tcNumber: parseInt(row[15].trim(), 10),
+      aValue: row[0],
+      cValue: row[2],
+    }))
+    .filter(item => !isNaN(item.tcNumber)); // Ensure tcNumber is valid
 
-  if (tcNumbers.length === 0) {
+  if (validRows.length === 0) {
     document.getElementById("lastTCNumber").textContent = "No TC numbers available.";
     return;
   }
 
-  const maxTC = Math.max(...tcNumbers);
-  document.getElementById("lastTCNumber").textContent = `Last Issued TC Number: ${maxTC}`;
+  // Find the row with max TC number
+  const highest = validRows.reduce((prev, curr) => {
+    return curr.tcNumber > prev.tcNumber ? curr : prev;
+  });
+
+  // Set output with line break
+  document.getElementById("lastTCNumber").innerHTML =
+    `Last Issued TC Number: ${highest.tcNumber}<br/>A No. ${highest.aValue} (${highest.cValue})`;
 }
+
 //
 
 
@@ -4338,7 +4357,6 @@ const sessionBegin = newsessionBegin[selectedSession] || "N/A"; // Default if no
 
 
 <!-- Report Card Summry section 6 code stop-->
-
 
 
 
