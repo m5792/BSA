@@ -5,24 +5,11 @@
 
 <style>
 table{
-    width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  background: #ffffff;
-  border: 1px solid #d0d0d0;
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
 
-  }
-
-/* Optional heder alwayas fix on top and table scrolling  */
-  table{
-  overflow-x: auto;
-  display: block;
-  max-height: 400px; /* Optional scrolling */
-  }
-
-  /* Table border & cell style */
 td,th{
 border:1px solid #ccc;
 padding:6px;
@@ -32,6 +19,7 @@ text-align:center;
 th{
 background:#d5d8dc;
 }
+
 
   /* Header design */
 
@@ -544,8 +532,8 @@ let rowsActivity = "";
 
 if (activities) {
 
-let headerRow = '<tr><th style="width:280px;">Activity</th>';
-let gradeRow =  '<tr><th style="width:280px;background-color: white;color: black;">Grade</th>';
+let headerRow = '<tr><th style="width:200px;">Activity</th>';
+let gradeRow =  '<tr><th style="width:200px;background-color: white;color: black;">Grade</th>';
 
 activities.forEach(act => {
 
@@ -561,7 +549,7 @@ if(typeof idx === "number"){
 //let grade = row[idx] || "";
 
 headerRow += `<th>${act}</th>`;
-gradeRow += `<td style="font-weight:bold;">${grade}</td>`;
+gradeRow += `<td >${grade}</td>`;
 
 });
 
@@ -866,8 +854,8 @@ function printMarksheet() {
     }
 
     th {
-        background: #0077b6;
-        color: white;
+         background: #c1c3c3;
+        color: rgb(9, 9, 9);
         font-weight: bold;
         font-size: 15px;
     }
