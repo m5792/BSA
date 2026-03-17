@@ -76,7 +76,8 @@ box-shadow:0 0 10px #ccc;
 
 </head>
 
-<body onload="loadBSAMARKSheet()">
+<!-- <body onload="loadBSAMARKSheet()"> -->
+  <body onload="loadBSAMARKSheet().then(()=>showTodayBirthdays())"></body>
 
 <h2>Student Report Card</h2>
 
@@ -120,62 +121,102 @@ box-shadow:0 0 10px #ccc;
 </div>
 
 
-
+<!-- Start ===== ------------------------------ expandbar code /script and content --------------------------- ===== -->
 
 
 <style>
-  .toggleBox{
-background:#0c0c0c;
-color:rgb(248, 246, 246);
-padding:10px;
-font-weight:bold;
-cursor:pointer;
-border-radius:6px;
+.toggleBox{
+  background:#0c0c0c;
+  color:#fff;
+  padding:10px;
+  font-weight:bold;
+  cursor:pointer;
+  border-radius:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+
+.leftText{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.statusBtn{
+  padding:3px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.openBtn{
+  background:green;
+  color:#fff;
+}
+
+.closeBtn{
+  background:red;
+  color:#fff;
 }
 
 .expandContent{
-max-height:0;
-overflow:hidden;
-transition:0.4s ease;
-background:#f4f6f6;
-padding:0 10px;
-border-radius:6px;
+  max-height:0;
+  overflow:hidden;
+  transition:0.4s ease;
+  background:#f4f6f6;
+  padding:0 10px;
+  border-radius:6px;
 }
 
 .expandContent.open{
-max-height:1500px;
-padding:10px;
+  max-height:1500px;
+  padding:10px;
 }
 </style>
+
 <script>
-  function toggleDiv(){
+function toggleDiv(btn){
 
-let div=document.getElementById("expandDiv");
+  let content = btn.nextElementSibling;
+  let status = btn.querySelector(".statusBtn");
 
-div.classList.toggle("open");
+  content.classList.toggle("open");
 
+  if(content.classList.contains("open")){
+    status.innerText = "Close";
+    status.classList.remove("openBtn");
+    status.classList.add("closeBtn");
+  }else{
+    status.innerText = "Open";
+    status.classList.remove("closeBtn");
+    status.classList.add("openBtn");
+  }
 }
 </script>
-<div class="toggleBox" onclick="toggleDiv()">
-  <span style="color: rgb(251, 171, 171);"> Click To View Marksheet (Open / Close)</span> |
-  <span id="sNameSpan"></span> |
+
+
+
+<!-- start ===== expandbar 1 ===== -->
+<div class="toggleBox" onclick="toggleDiv(this)">
+  
+  <div class="leftText">
+    <span style="color:#ffabab;">📄 Marksheet Bar</span> |
+
+     <span id="sNameSpan"></span> |
 Grade: <span id="grade"></span> | 
 Class Position: <span id="positionSpan" style="color: rgb(239, 250, 239);"></span> 
 <button onclick="printMarksheet()" style="border: none; color: rgb(246, 247, 183); font-weight: bold;  cursor: pointer; background: black;" >🖨️ Print Marksheet</button>
 
-</div>
-<div id="expandDiv" class="expandContent" style="border-bottom: solid 5PX red;"> <div id="marksheet"></div> </div>
+</div> <div class="statusBtn openBtn">Open</div> </div>
 
+<div class="expandContent"  style="border-bottom: solid 5PX red;"> <div id="marksheet"></div> </div>
 
+<!-- xxx ===== expandbar 1 ===== -->
 
 <div id="studentCount" style="color: #002569; font-size: 18px; font-weight: bold;"></div> 
 <div id="top5students" style="margin-top:10px;font-weight:bold;color:#0a0a0a; background-color: rgb(243, 255, 254);"></div>
-
-
-
-
 <table  id="positionTableBox" style="margin-top:15px;"></table>
-
 
 
 
@@ -209,6 +250,20 @@ style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
 <div style="margin-top:10px;text-align:center">
 </div></div></div>
 <!-- Marksheet Popup  stop ----------- -->
+
+
+
+
+
+
+
+
+
+
+<span style="color: rgb(1, 78, 97); font-size: 14px; font-weight: bold; font-style: italic;">
+  Today Birthday..
+</span> 
+<ul id="birthdayList" style="padding:0;"></ul>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -435,17 +490,17 @@ rows+=`
 
 <tr>
 
-<td style="background-color: white ;text-align: left ; color: balck ;">${sub}</td>
+<td style="background-color: white ;text-align: left ;font-size:18px; color: balck ;">${sub}</td>
 
-<td>${m1}</td>
-<td>${m2}</td>
-<td style="color: black ;font-size:110%; font-weight: bold;">${(n1+n2)||""}</td>
+<td style="font-size:18px; color: balck ;">${m1}</td>
+<td style="font-size:18px; color: balck ;">${m2}</td>
+<td style="color: black ;font-size:18px; font-weight: bold;">${(n1+n2)||""}</td>
 
-<td>${m3}</td>
-<td>${m4}</td>
-<td style="color: black ;font-size:110%; font-weight: bold;">${(n3+n4)||""}</td>
+<td style="font-size:18px; color: balck ;">${m3}</td>
+<td style="font-size:18px; color: balck ;">${m4}</td>
+<td style="color: black ;font-size:18px; font-weight: bold;">${(n3+n4)||""}</td>
 
-<td style="color: black ;font-size:110%; font-weight: bold;">${sum}</td>
+<td style="color: black ;font-size:18px; font-weight: bold;">${sum}</td>
 
 </tr>
 
@@ -509,11 +564,11 @@ const classActivity = {
 "1st":["Games","Drawing","Moral Values / G.K","Cleanliness","Homework","Attendance"],
 
 "2nd":["Games","Drawing","Moral Values / G.K","Cleanliness","Homework","Attendance"],
-"3rd":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout","Homework","Attendance"],
+"3rd":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
 
-"4th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout","Homework","Attendance"],
-"5th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout","Homework","Attendance"],
-"6th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout","Homework","Attendance"]
+"4th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
+"5th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
+"6th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"]
 
 };
 
@@ -523,7 +578,7 @@ const activityIndex = {
 "Drawing":34,
 "Moral Values / G.K":33,
 "Cleanliness":35,
-"Scout":35,
+"Scout Guide":35,
 "Homework":"Regular",
 "Attendance":36
 };
@@ -661,7 +716,7 @@ document.getElementById("marksheet").innerHTML=`
 <td style="background-color: #1c2833 ;text-align: center; color: white ;"><span style="color: white ;font-size:150%; font-weight: bold;"> REPORT CARD:  ${row[39]}</span></td>
 </table>
 
-<table style="width:100%; ">
+<table style="width:100%; font-size:18px;">
 <tr style="border: none;">  
 <td style="background-color: white ;text-align: RIGHT; color: balck ;border: none;"><span style="color: black ;font-size:100%; font-weight: bold;"> ADMISSION NO: </span> </td>
 <td style="background-color: white ;text-align: center; color: balck ;border: none; font-size:18px; font-weight: bold;">${row[0]}</td>
@@ -713,27 +768,27 @@ document.getElementById("marksheet").innerHTML=`
 </td>
 </table>
 
-<table style="width:100%; background-color: white ;"> 
+<table style="width:100%; background-color: white ;font-size:18px;"> 
 <tr> 
-<td style="background-color: #d5d8dc ;text-align: center ; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">SUBJECTS</td>
-<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">CLASS ASSESSMENT</td>
-<td style="background-color: #d5d8dc ;text-align: center ; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">TERMS-1</td>
-<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">TOTAL</td>
-<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">CLASS ASSESSMENT</td>
-<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">TERM-2</td>
-<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">TOTAL</td>
-<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-family:Eras Bold ITC;font-weight: bold;">TOTAL</td>
+<td style="background-color: #d5d8dc ;text-align: center ; color: balck ;font-weight: bold;">Subjects</td>
+<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-weight: bold;">Class Assessment</td>
+<td style="background-color: #d5d8dc ;text-align: center ; color: balck ;font-weight: bold;">Terms-1</td>
+<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-weight: bold;">Total</td>
+<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-weight: bold;">Class Assessment</td>
+<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-weight: bold;">Terms-2</td>
+<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-weight: bold;">Total</td>
+<td style="background-color: #d5d8dc ;text-align: center; color: balck ;font-weight: bold;">G.Total</td>
 </tr>
 
 <tr> 
 <td style="background-color: #eaecee ;text-align: center ; color: balck ;font-weight: bold;">Max. Marks</td>
-<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;">30</td>
-<td style="background-color: #eaecee ;text-align: center ; color: balck ;font-weight: bold;">70</td>
-<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;">100</td>
-<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;">30</td>
-<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;">70</td>
-<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;">100</td>
-<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;">200</td>
+<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;font-size:18px;">30</td>
+<td style="background-color: #eaecee ;text-align: center ; color: balck ;font-weight: bold;font-size:18px;">70</td>
+<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;font-size:18px;">100</td>
+<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;font-size:18px;">30</td>
+<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;font-size:18px;">70</td>
+<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;font-size:18px;">100</td>
+<td style="background-color: #eaecee ;text-align: center; color: balck ;font-weight: bold;font-size:18px;">200</td>
 </tr>
 
 ${rows}
@@ -1083,8 +1138,94 @@ printWindow.document.close();
 printWindow.print();
 
 }
+
+//  Birtday Function ------------------
+function parseDOB(dob){
+
+  if(!dob) return null;
+
+  // example: 24-Dec-2016 / 4-Dec-16
+  let parts = dob.split("-");
+
+  if(parts.length !== 3) return null;
+
+  let day = parseInt(parts[0]);
+
+  let monthStr = parts[1].toLowerCase();
+
+  let year = parseInt(parts[2]);
+
+  // convert 2 digit year → 4 digit
+  if(year < 100){
+    year += 2000;
+  }
+
+  const months = {
+    jan:0,feb:1,mar:2,apr:3,may:4,jun:5,
+    jul:6,aug:7,sep:8,oct:9,nov:10,dec:11
+  };
+
+  let month = months[monthStr.substring(0,3)];
+
+  if(month === undefined) return null;
+
+  return new Date(year, month, day);
+
+}function showTodayBirthdays(){
+
+let session = "2025-26";
+let today = new Date();
+
+let tDate = today.getDate();
+let tMonth = today.getMonth();
+
+let listHTML = "";
+
+for(let i=1; i<sheetBSAMARKData.length; i++){
+
+  let row = sheetBSAMARKData[i];
+
+  if(row[39] != session) continue;
+
+  let dob = row[5];
+  let d = parseDOB(dob);
+
+  if(!d) continue;
+
+  if(d.getDate() == tDate && d.getMonth() == tMonth){
+
+    listHTML += `
+      <li style="list-style:none; padding:4px 0; font-weight:bold; color:blue;font-size: 12px;">
+        🎂 ${row[2]} | Class - ${row[1]} | A.No - ${row[0]}
+      </li>
+    `;
+  }
+
+}
+
+if(listHTML == ""){
+  listHTML = `<li style="list-style:none;color:red;">No Birthday Today</li>`;
+}
+
+document.getElementById("birthdayList").innerHTML = listHTML;
+
+}
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
