@@ -22,11 +22,11 @@ margin-top:10px;
 }
 
 table{
-  overflow-x: auto;
-  display: block;
-  max-height: 500px; /* Optional scrolling */
-  }
-  
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
 td,th{
 border:1px solid #ccc;
 padding:6px;
@@ -36,6 +36,7 @@ text-align:center;
 th{
 background:#d5d8dc;
 }
+
 
   /* Header design */
 
@@ -50,7 +51,6 @@ background:#d5d8dc;
  color: rgb(0, 15, 15);
   transition: background-color 1s ease, color 1s ease;
   }
-    
 
 
 /* mytoolsbar */
@@ -227,7 +227,35 @@ function toggleDiv(btn){
 <div id="studentCount" style="color: #002569; font-size: 18px; font-weight: bold;"></div> 
 <div id="top5students" style="margin-top:10px;font-weight:bold;color:#0a0a0a; background-color: rgb(243, 255, 254);"></div>
 <button onclick="printPositionTable()" style="border: none; color: black; font-weight: bold;  cursor: pointer; background: rgb(255, 253, 253);">🖨️ Class Print</button>
-<table  id="positionTableBox" style="margin-top:15px;"></table>
+<div id="positionTableBox" style="margin-top:15px;"></div>
+<style>
+  #positionTableBox{
+  max-height: 600px;   /* height control */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#positionTableBox table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#positionTableBox th, 
+#positionTableBox td{
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+#positionTableBox th{
+  position: sticky;
+  top: 0;
+  background: #002630;
+  color: #fff;
+  z-index: 2;
+}
+</style>
 
 
 
@@ -257,9 +285,9 @@ overflow:auto;
 
 <button onclick="closeBSAMARKPopup()" 
 style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
-<button onclick="printMarksheet()" style="border: none; color: rgb(246, 247, 183); font-weight: bold;  cursor: pointer; background: black;" >🖨️ Print Marksheet</button>
 <div id="popupMarksheet"></div>
 <div style="margin-top:10px;text-align:center">
+  <button onclick="printMarksheet()" style="border: none; color: rgb(246, 247, 183); font-weight: bold;  cursor: pointer; background: black;" >🖨️ Print Marksheet</button>
 </div></div></div>
 <!-- Marksheet Popup  stop ----------- -->
 </div> <!-- bsamarksheet div buttan content stop ----  xxx ------- -->
@@ -267,21 +295,7 @@ style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
 
 <!-- bsastudentserch div buttan content start ----  Start ------- -->
 <div id="bsastudentserch" class="report-content">
-
-  <input type="text" id="searchInput" placeholder="Search student..." 
-onkeyup="globalStudentSearch()" 
-style="width:300px;padding:6px;">
-
-<table border="1" width="100%" id="resultTable" 
-style="margin-top:10px;border-collapse:collapse;">
-
-<thead>
-<tr></tr>
-</thead>
-
-<tbody></tbody>
-
-</table>
+hello 
 </div>
 <!-- bsastudentserch div buttan content stop ----  xxx ------- -->  
 
@@ -1290,6 +1304,7 @@ function printMarksheet() {
 
 //----------------------------*****-------------------------****---------------------------
 
+
 function showPositionTable(){
 
 let cls=document.getElementById("class").value;
@@ -1333,8 +1348,9 @@ total:total
 
 students.sort((a,b)=>b.total-a.total);
 
-let html=`
+let html = `
 <table>
+<thead>
 <tr>
 <th>Position</th>
 <th>Admission No</th>
@@ -1344,6 +1360,8 @@ let html=`
 <th>Date Birth</th>
 <th>Roll No</th>
 </tr>
+</thead>
+<tbody>
 `;
 
 students.forEach((s,i)=>{
@@ -1371,7 +1389,7 @@ ${s.adm}
 
 });
 
-html+="</table>";
+html += "</tbody></table>";
 
 document.getElementById("positionTableBox").innerHTML=html;
 
@@ -1587,7 +1605,66 @@ document.getElementById("birthdayList").innerHTML = listHTML;
 
 
 
-<!-- ====================--Student Serach bar sceript here start --============================== --> 
+<!-- start ====================== ------------ Student Table Serchbar Script Start --------- ===================== Start ============== -->
+
+<style>
+
+/* Container scroll ke liye */
+#tableContainer {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+/* Table Style */
+#resultTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background: #fff;
+}
+
+/* Sticky Header */
+#resultTable thead th {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(45deg, #004d66, #007991);
+    color: white;
+    z-index: 2;
+    padding: 10px;
+    font-size: 14px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Body */
+#resultTable td {
+    padding: 8px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* Zebra */
+#resultTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover */
+#resultTable tbody tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Highlight search */
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+    padding: 2px;
+}
+
+</style>
+
+
+
 <script>
 const apiSRldgrKey = "AIzaSyCerUAdaqNQ7mxjgNBbAeiHDEKgN0Dzoao";
 const sheetSRldgrId = "1BiADwSV64zXPz0UyVmYN7BlyW8DiCylgT3-bSrnIk38";
@@ -1595,9 +1672,9 @@ const rangeID = "RAGISTER!A:Q";
 
 let allStudents = [];
 
-// 👉 Header + Column Mapping
+// 👉 Columns
 const columns = [
-     { name: "A.NO", index: 0 },
+    { name: "A.NO", index: 0 },
     { name: "Student Name", index: 2 },
     { name: "Date of Birth", index: 3 },
     { name: "Father Name", index: 4 },
@@ -1613,23 +1690,26 @@ const columns = [
     { name: "R/T", index: 14 }
 ];
 
-// 👉 Init function
+// 👉 Init
 async function initStudentSearch(){
     await loadStudents();
-    createHeader();
+    document.getElementById("resultTable").style.display = "none";
 }
 
 // 👉 Load Data
 async function loadStudents() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetSRldgrId}/values/${rangeID}?key=${apiSRldgrKey}`;
-    
-    const res = await fetch(url);
-    const data = await res.json();
-    
-    allStudents = data.values || [];
+    try {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetSRldgrId}/values/${rangeID}?key=${apiSRldgrKey}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        allStudents = data.values || [];
+    } catch (err) {
+        console.error("Data Load Error:", err);
+    }
 }
 
-// 👉 Create Header
+// 👉 Header
 function createHeader() {
     let theadRow = document.querySelector("#resultTable thead tr");
 
@@ -1642,27 +1722,50 @@ function createHeader() {
     theadRow.innerHTML = html;
 }
 
-// 👉 Search Function
+// 👉 Highlight Safe
+function highlightText(text, search) {
+    if (!text) return "";
+
+    let escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let regex = new RegExp(`(${escaped})`, "gi");
+
+    return text.toString().replace(regex, `<span class="highlight">$1</span>`);
+}
+
+// 👉 Search
 function globalStudentSearch() {
 
-    let input = document.getElementById("searchInput").value.toLowerCase();
+    let input = document.getElementById("searchInput").value.trim().toLowerCase();
+    let table = document.getElementById("resultTable");
     let tbody = document.querySelector("#resultTable tbody");
 
     tbody.innerHTML = "";
 
-    if (!input) return;
+    // 🔴 Empty input
+    if (input === "") {
+        table.style.display = "none";
+        return;
+    }
+
+    table.style.display = "table";
+    createHeader();
 
     let count = 1;
+    let found = false;
 
     allStudents.forEach(row => {
+
+        if (!row) return;
 
         let rowText = row.join(" ").toLowerCase();
 
         if (rowText.includes(input)) {
 
+            found = true;
+
             let tr = document.createElement("tr");
 
-            // 👉 R/T check
+            // 👉 R/T Highlight
             if (row[14] && row[14].toUpperCase() === "T") {
                 tr.style.background = "#ffcccc";
             }
@@ -1670,16 +1773,27 @@ function globalStudentSearch() {
             let html = `<td>${count++}</td>`;
 
             columns.forEach(col => {
-                html += `<td>${row[col.index] || ""}</td>`;
+                let cellData = row[col.index] || "";
+                let highlighted = highlightText(cellData, input);
+                html += `<td>${highlighted}</td>`;
             });
 
             tr.innerHTML = html;
             tbody.appendChild(tr);
         }
     });
+
+    // 🔴 No Result
+    if (!found) {
+        tbody.innerHTML = `<tr>
+            <td colspan="${columns.length + 1}" style="color:red; padding:10px;">
+                No Result Found
+            </td>
+        </tr>`;
+    }
 }
 </script>
-<!-- ====================--Student Serach bar sceript here stop --============================== --> 
+<!-- xxx ====================== ------------ Student Table Serchbar Script Stop --------- ===================== xxx ============== -->
 
 
 <!-- ====-- start --===========-----Transfer Certificate script and code Start ============-->
@@ -2567,6 +2681,13 @@ function toggleNote(num){
 </style>
   <div class="footer" >   <!-- footer div start---- -->
 
+    <div id="tableContainer">
+    <table id="resultTable">
+        <thead><tr></tr></thead>
+        <tbody></tbody>
+    </table>
+</div>
+
 <div style="display: flex; justify-content: center; align-items: center; background-color: #f7f8fa; color: rgb(1, 1, 1); font-size: 12px; font-weight: bold;  border: 5px solid #003444; ">
   
   <!-- Current Time -->
@@ -2576,6 +2697,7 @@ function toggleNote(num){
   <span id="todayEvent" style="color: rgb(0, 65, 69);font-weight: bold;font-size: 14px; "></span>
   <span id="globalMessage" style="color: rgb(16, 15, 15); font-size: 16px;"></span>
   </marquee>
+ <input type="text" id="searchInput" placeholder="Search student Details..." onkeyup="globalStudentSearch()" style="width:300px;padding:6px;background-color: #f8e7d0;">
 
 </div>
  
