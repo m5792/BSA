@@ -1,4 +1,3 @@
-<div style="text-align:center; background-color: #c1f1f3; color: #002630; font-weight: bold;"> <strong style="font-size: 18px;">BABA SCHOLAR'S ACADEMY</strong> - Contect No ☎ : 9389668204, 8279808172 A Co-Educational English Medium School (Aff No. RTE65879) </div> <br/>
 
 <!DOCTYPE html>
 <html> <head>
@@ -10,6 +9,7 @@ table{
 width:100%;
 border-collapse:collapse;
 margin-top:10px;
+color: #000000;
 }
 
 td,th{
@@ -79,7 +79,7 @@ box-shadow:0 0 10px #ccc;
 </head>
 
 <!-- <body onload="loadBSAMARKSheet()"> -->
-<body onload="loadBSAMARKSheet().then(()=>showTodayBirthdays()); initStudentSearch();">
+<body onload="loadBSAMARKSheet().then(()=>showTodayBirthdays()); initStudentSearch();fetchUserData()">
 
 <h3>Student Report Card</h3>
 
@@ -118,8 +118,9 @@ box-shadow:0 0 10px #ccc;
 <select id="admission" onchange="showMarksheet()">
 <option value="">Select Admission No</option>
 </select>
+<button onclick="printMarksheet()" style="border: none; color: rgb(0, 67, 109); font-weight: bold;  cursor: pointer; background: rgb(226, 226, 226);" >🖨️ Print Marksheet</button>
 
-<button onclick="printPositionTable()" style="border: none; color: black; font-weight: bold;  cursor: pointer; background: rgb(226, 226, 226);">🖨️Print</button>
+<button onclick="printPositionTable()" style="border: none; color: rgb(145, 0, 0); font-weight: bold;  cursor: pointer; background: rgb(226, 226, 226);">🖨️Print Class Summarry</button>
 </div>
 
 
@@ -207,7 +208,6 @@ function toggleDiv(btn){
      <span id="sNameSpan"></span> |
 Grade: <span id="grade"></span> | 
 Class Position: <span id="positionSpan" style="color: rgb(239, 250, 239);"></span> 
-<button onclick="printMarksheet()" style="border: none; color: rgb(246, 247, 183); font-weight: bold;  cursor: pointer; background: black;" >🖨️ Print Marksheet</button>
 
 </div> <div class="statusBtn openBtn">Open</div> </div>
 
@@ -217,7 +217,35 @@ Class Position: <span id="positionSpan" style="color: rgb(239, 250, 239);"></spa
 
 <div id="studentCount" style="color: #002569; font-size: 18px; font-weight: bold;"></div> 
 <div id="top5students" style="margin-top:10px;font-weight:bold;color:#0a0a0a; background-color: rgb(243, 255, 254);"></div>
-<table  id="positionTableBox" style="margin-top:15px;"></table>
+<div id="positionTableBox" style="margin-top:15px;"></div>
+<style>
+  #positionTableBox{
+  max-height: 600px;   /* height control */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#positionTableBox table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#positionTableBox th, 
+#positionTableBox td{
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+#positionTableBox th{
+  position: sticky;
+  top: 0;
+  background: #002630;
+  color: #fff;
+  z-index: 2;
+}
+</style>
 
 
 
@@ -249,6 +277,8 @@ overflow:auto;
 style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
 <div id="popupMarksheet"></div>
 <div style="margin-top:10px;text-align:center">
+  <button onclick="printMarksheet()" style="border: none; color: rgb(246, 247, 183); font-weight: bold;  cursor: pointer; background: rgb(156, 0, 0);" >🖨️ Print Marksheet</button>
+<br/><br/>
 </div></div></div>
 <!-- Marksheet Popup  stop ----------- -->
 
@@ -257,7 +287,7 @@ style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
 
 
 
-<!-- start ===== expandbar 2 ===== -->
+<!-- start ===== expandbar 2 ===== 
 <div class="toggleBox" onclick="toggleDiv(this)" style="background-color: #eefbfb;">
   
 <div class="leftText">
@@ -269,9 +299,7 @@ style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
 
 <div class="expandContent"  style="border-bottom: solid 5PX rgb(241, 213, 1);">
  
-<input type="text" id="searchInput" placeholder="Search student..." 
-onkeyup="globalStudentSearch()" 
-style="width:300px;padding:6px;">
+<input type="text" id="searchInput" placeholder="Search student..." onkeyup="globalStudentSearch()" style="width:300px;padding:6px;">
 
 <table border="1" width="100%" id="resultTable" 
 style="margin-top:10px;border-collapse:collapse;">
@@ -287,10 +315,10 @@ style="margin-top:10px;border-collapse:collapse;">
 
 </div>
 
-<!-- xxx ===== expandbar 2 ===== -->
+ xxx ===== expandbar 2 ===== -->
 
 
-
+<br/>
 <span style="color: rgb(1, 78, 97); font-size: 14px; font-weight: bold; font-style: italic;">
   Today Birthday..
 </span> 
@@ -1007,8 +1035,9 @@ total:total
 
 students.sort((a,b)=>b.total-a.total);
 
-let html=`
+let html = `
 <table>
+<thead>
 <tr>
 <th>Position</th>
 <th>Admission No</th>
@@ -1018,6 +1047,8 @@ let html=`
 <th>Date Birth</th>
 <th>Roll No</th>
 </tr>
+</thead>
+<tbody>
 `;
 
 students.forEach((s,i)=>{
@@ -1045,7 +1076,7 @@ ${s.adm}
 
 });
 
-html+="</table>";
+html += "</tbody></table>";
 
 document.getElementById("positionTableBox").innerHTML=html;
 
@@ -1260,6 +1291,63 @@ document.getElementById("birthdayList").innerHTML = listHTML;
 
 
 
+<!-- start ====================== ------------ Student Table Serchbar Script Start --------- ===================== Start ============== -->
+
+<style>
+
+/* Container scroll ke liye */
+#tableContainer {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+/* Table Style */
+#resultTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background: #fff;
+}
+
+/* Sticky Header */
+#resultTable thead th {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(45deg, #004d66, #007991);
+    color: white;
+    z-index: 2;
+    padding: 10px;
+    font-size: 14px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Body */
+#resultTable td {
+    padding: 8px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* Zebra */
+#resultTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover */
+#resultTable tbody tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Highlight search */
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+    padding: 2px;
+}
+
+</style>
 
 
 
@@ -1270,9 +1358,9 @@ const rangeID = "RAGISTER!A:Q";
 
 let allStudents = [];
 
-// 👉 Header + Column Mapping
+// 👉 Columns
 const columns = [
-     { name: "A.NO", index: 0 },
+    { name: "A.NO", index: 0 },
     { name: "Student Name", index: 2 },
     { name: "Date of Birth", index: 3 },
     { name: "Father Name", index: 4 },
@@ -1288,23 +1376,26 @@ const columns = [
     { name: "R/T", index: 14 }
 ];
 
-// 👉 Init function
+// 👉 Init
 async function initStudentSearch(){
     await loadStudents();
-    createHeader();
+    document.getElementById("resultTable").style.display = "none";
 }
 
 // 👉 Load Data
 async function loadStudents() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetSRldgrId}/values/${rangeID}?key=${apiSRldgrKey}`;
-    
-    const res = await fetch(url);
-    const data = await res.json();
-    
-    allStudents = data.values || [];
+    try {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetSRldgrId}/values/${rangeID}?key=${apiSRldgrKey}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        allStudents = data.values || [];
+    } catch (err) {
+        console.error("Data Load Error:", err);
+    }
 }
 
-// 👉 Create Header
+// 👉 Header
 function createHeader() {
     let theadRow = document.querySelector("#resultTable thead tr");
 
@@ -1317,27 +1408,50 @@ function createHeader() {
     theadRow.innerHTML = html;
 }
 
-// 👉 Search Function
+// 👉 Highlight Safe
+function highlightText(text, search) {
+    if (!text) return "";
+
+    let escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let regex = new RegExp(`(${escaped})`, "gi");
+
+    return text.toString().replace(regex, `<span class="highlight">$1</span>`);
+}
+
+// 👉 Search
 function globalStudentSearch() {
 
-    let input = document.getElementById("searchInput").value.toLowerCase();
+    let input = document.getElementById("searchInput").value.trim().toLowerCase();
+    let table = document.getElementById("resultTable");
     let tbody = document.querySelector("#resultTable tbody");
 
     tbody.innerHTML = "";
 
-    if (!input) return;
+    // 🔴 Empty input
+    if (input === "") {
+        table.style.display = "none";
+        return;
+    }
+
+    table.style.display = "table";
+    createHeader();
 
     let count = 1;
+    let found = false;
 
     allStudents.forEach(row => {
+
+        if (!row) return;
 
         let rowText = row.join(" ").toLowerCase();
 
         if (rowText.includes(input)) {
 
+            found = true;
+
             let tr = document.createElement("tr");
 
-            // 👉 R/T check
+            // 👉 R/T Highlight
             if (row[14] && row[14].toUpperCase() === "T") {
                 tr.style.background = "#ffcccc";
             }
@@ -1345,12 +1459,656 @@ function globalStudentSearch() {
             let html = `<td>${count++}</td>`;
 
             columns.forEach(col => {
-                html += `<td>${row[col.index] || ""}</td>`;
+                let cellData = row[col.index] || "";
+                let highlighted = highlightText(cellData, input);
+                html += `<td>${highlighted}</td>`;
             });
 
             tr.innerHTML = html;
             tbody.appendChild(tr);
         }
     });
+
+    // 🔴 No Result
+    if (!found) {
+        tbody.innerHTML = `<tr>
+            <td colspan="${columns.length + 1}" style="color:red; padding:10px;">
+                No Result Found
+            </td>
+        </tr>`;
+    }
 }
 </script>
+<!-- xxx ====================== ------------ Student Table Serchbar Script Stop --------- ===================== xxx ============== -->
+
+
+
+
+
+<!-- ==============================================footer start================================================================================ -->
+
+ <style>
+  .footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: #000000; color: white; text-align: center; padding: 0; /* Remove padding */ font-size: 14px; z-index: 1000; box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3);}
+  .footer table {margin: 0; padding: 0; border-spacing: 0; border-collapse: collapse; width: 100%; }
+  .footer td {padding: 5px 10px; /* Top-Bottom = 0, Left-Right = 10px gap */}
+</style>
+  <div class="footer" >   <!-- footer div start---- -->
+
+<div id="tableContainer">
+    <table id="resultTable">
+        <thead><tr></tr></thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div style="display: flex; justify-content: center; align-items: center; background-color: #f7f8fa; color: rgb(1, 1, 1); font-size: 12px; font-weight: bold;  border: 5px solid #003444; ">
+  
+  <!-- Current Time -->
+  <div id="currentDateTime" style="padding: 5px 10px; white-space: nowrap; font-size: 16px; background-color: blue; color: white; "></div>
+  <button style="border: none; background-color: #e6f9e4; color: rgb(3, 98, 139);cursor: pointer;" onclick="togglesidebarNotes()" mfvbtn="0">☰</button>
+   <marquee behavior="left" direction="RIG" scrollamount="5">
+  <span id="todayEvent" style="color: rgb(0, 65, 69);font-weight: bold;font-size: 14px; "></span>
+  <span id="globalMessage" style="color: rgb(16, 15, 15); font-size: 16px;"></span>
+  BABA SCHOLAR'S ACADEMY - Contect No ☎ : 9389668204, 8279808172 A Co-Educational English Medium School (Aff No. RTE65879)
+  </marquee>
+
+  <input type="text" id="searchInput" placeholder="Search student Details..." onkeyup="globalStudentSearch()" style="width:300px;padding:6px;background-color: #f8e7d0;">
+</div>
+ 
+
+
+<!-- ✅ Fixed Positioned Refresh Button -->
+ 
+
+
+   <!-- Current date and time will be displayed here -->
+            
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+             
+<script>
+function displayCurrentDateTime() {
+const now = new Date();
+
+// Formatting options
+const options = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit' 
+};
+
+// Formatting date and time
+const formattedDateTime = now.toLocaleString('en-US', options);
+
+// Displaying in the div
+document.getElementById("currentDateTime").textContent = `Today: ${formattedDateTime}`;
+}
+
+// Call the function on page load to show the current date and time
+displayCurrentDateTime();
+
+// Update the date and time every second
+setInterval(displayCurrentDateTime, 1000);
+</script>
+<!-- Current date and time will be displayed Stop -->
+
+<!-- ====================-- User Information Div --============================== --> 
+<div class="user-info">
+<!-- LEFT SIDE (School Info) -->
+  <strong style="font-size:18px; padding:3px 10px;">
+    BABA SCHOLAR'S ACADEMY
+  </strong> 
+  - Contect No ☎ : 9389668204, 8279808172 A Co-Educational English Medium School (Aff No. RTE65879)
+  <!-- RIGHT SIDE -->
+  <div class="right-box">
+  <span id="username" onclick="showUserDetails()"></span>
+  <!-- hidden spans -->
+  <span id="userid" style="display:none;"></span>
+  <span id="reportauth" style="display:none;"></span>
+  <span id="vcrauth" style="display:none;"></span>
+  <button id="logout-btn" onclick="logout()">Logout</button>
+  </div> </div>
+<!-- ====================-- User Information Div --============================== --> 
+
+  </div>    <!-- ================  footer div stop ==================== xxx  ---- -->
+
+
+
+
+
+<!-- =============== today events script start ===================== -->
+
+<script>
+const apiEVENTKey = "AIzaSyCerUAdaqNQ7mxjgNBbAeiHDEKgN0Dzoao";
+const sheetEVENTId = "1BiADwSV64zXPz0UyVmYN7BlyW8DiCylgT3-bSrnIk38";
+const rangeEVENT = "EVENT!A:J"; // A=Type, B=Name, C=Date, D=Optional Notes
+
+function convertToDate(str) {
+    const [d, m, y] = str.split("-");
+
+    const mon = {
+        Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5,
+        Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11
+    }[m];
+
+    if (mon === undefined) return null;
+
+    let year = Number(y);
+
+    // allow "yy" and "yyyy"
+    if (year < 100) year = 2000 + year;
+
+    return new Date(year, mon, Number(d));
+}
+
+async function loadTodayEvent() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetEVENTId}/values/${rangeEVENT}?key=${apiEVENTKey}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const rows = data.values || [];
+
+        let todayEvents = [];
+        let yearlyRemaining = [];
+        let monthlyRemaining = [];
+
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const today_dd = today.getDate();
+        const today_mm = today.getMonth();
+        const today_yy = today.getFullYear();
+
+        rows.forEach(row => {
+            const type = row[0]; 
+            const name = row[1];
+            const dateStr = row[2];
+
+            if (!dateStr || !name) return;
+
+            let eventDate = convertToDate(dateStr);
+            if (!eventDate) return;
+
+            eventDate.setHours(0,0,0,0);
+
+            // --- YEARLY EVENTS ---
+            if (type === "Yearly") {
+                eventDate.setFullYear(today_yy);
+                const diffDays = Math.floor((eventDate - today) / (1000*60*60*24));
+
+                if (diffDays === 0) todayEvents.push(name);
+                if (diffDays === 1 || diffDays === 2) {
+                    yearlyRemaining.push(
+                        `<span style="color:grey"> ✨ <span style="color:red">${diffDays} Days Left –</span> ${name}</span>`
+                    );
+                }
+            }
+
+            // --- MONTHLY EVENTS ---
+            if (type === "Monthly") {
+                const eventDay = eventDate.getDate();
+                let diffDays = eventDay - today_dd;
+
+                if (diffDays < 0)
+                    diffDays += new Date(today_yy, today_mm + 1, 0).getDate();
+
+                if (diffDays === 0) todayEvents.push(name);
+                if (diffDays === 1 || diffDays === 2) {
+                    monthlyRemaining.push(
+                        `<span style="color:#026c96"> ✦ <span style="color:red">${diffDays} Days Left –</span> ${name}</span>`
+                    );
+                }
+            }
+
+            // --- SINGLE EVENT (Exact Date: dd-mm-yyyy) ---
+            if (type === "Event") {
+                if (
+                    eventDate.getDate() === today_dd &&
+                    eventDate.getMonth() === today_mm &&
+                    eventDate.getFullYear() === today_yy     // FIX Added
+                ) {
+                    todayEvents.push(name);
+                }
+            }
+        });
+
+        let finalOutput = [];
+        if (todayEvents.length > 0) {
+            finalOutput.push(
+                `<span>✭ <strong>Today: </strong> ${todayEvents.join(" ✨ ")} ✭</span>`
+            );
+        }
+        if (yearlyRemaining.length > 0) 
+            finalOutput = finalOutput.concat(yearlyRemaining);
+        if (monthlyRemaining.length > 0) 
+            finalOutput = finalOutput.concat(monthlyRemaining);
+        document.getElementById("todayEvent").innerHTML =
+            finalOutput.length > 0 ? finalOutput.join(" | ") : "";
+    } catch (err) {
+        console.error(err);
+        document.getElementById("todayEvent").innerHTML = "Error loading events";
+    }
+}
+
+loadTodayEvent();
+</script>
+<!-- =============== today events script stop ===================== -->
+
+
+
+ 
+<!-- ========= Button Configure Details List Start Here ---------- ============ -->
+
+<!-- Sidebar Open Button 
+<button onclick="togglesidebarNotes()" style="padding:6px 12px;">📑 Notes</button>-->
+
+<div class="sidebarnotes">
+
+<div id="notesBox" class="notes" style="font-size:14px;">
+
+<!-- Close Button -->
+<button class="closesidebarBtn" onclick="togglesidebarNotes()">✖</button>
+<br/><br/>
+
+<!-- ===== BUTTON 1 ===== -->
+<button class="noteBtn" onclick="toggleNote(1)">📑 Button Mapping</button>
+
+<div id="noteContent1" class="noteContent">
+
+<p style="color:red;">(mfvbtn="1") - Button Mapping</p>
+
+
+<p>21- Creat New Entry</p>
+  <p style="color: red;">--- 🔎 Global Serch --- </p>
+ 1234567889
+</div>
+
+
+<!-- ===== BUTTON 2 ===== -->
+<button class="noteBtn" onclick="toggleNote(2)">Url & Link</button>
+
+<div id="noteContent2" class="noteContent">
+
+<p onclick="window.open('https://docs.google.com/spreadsheets/d/1BiADwSV64zXPz0UyVmYN7BlyW8DiCylgT3-bSrnIk38/edit?gid=435632414#gid=435632414','_blank')" style="cursor:pointer;color:#0026ff;">BSA Master Google Sheet</p>
+<p onclick="window.open('https://docs.google.com/spreadsheets/d/1tbVXCvnuH4eYLQo9WWrmqkvst2MXc5ok6y8ozqXiOv0/edit?gid=1647225676#gid=1647225676','_blank')" style="cursor:pointer;color:#0026ff;">BSA Data Entry Sheet</p>
+<p onclick="window.open('https://m5792.github.io/BSA/','_blank')" style="cursor:pointer;color:#0026ff;">BSA Index Html</p>
+<p onclick="window.open('https://m5792.github.io/BSA/BSA%20Marksheet.html','_blank')" style="cursor:pointer;color:#0026ff;">BSA Marksheet Index Html</p>
+</div>
+
+
+<!-- ===== BUTTON 3 ===== -->
+<button class="noteBtn" onclick="toggleNote(3)">⚙ Input Configure</button>
+
+<div id="noteContent3" class="noteContent">
+
+<p style="color:red;">---- Input Configure Code ----</p>
+
+<p>class="username" - For User Name</p>
+<p>class="usercode" - For User Code</p>
+<p>nputfont="font" - For First Letter Uppercase</p>
+<p>fontcapital="capitalletter" - For All Letter Uppercase</p>
+<p>class="usercodedp" - For User Code Dropdown</p>
+<p>class="inputhide" - For Unhide input When User "MA"</p>
+
+</div>
+
+
+</div> </div>
+
+<!-- ========= Button Configure Details List Stop Here ---------- ============ -->
+
+
+<style>
+
+.sidebarnotes{
+  position:relative;
+  display:inline-block;
+}
+
+.notes{
+  position:fixed;
+  top:55px;
+  right:-540px;
+  height:88vh;
+  width:420px;
+  background:white;
+  border-left:5px solid red;
+  padding:20px;
+  box-shadow:-5px 0 10px rgba(0,0,0,0.3);
+  transition:right 0.4s ease;
+  overflow-y:auto;
+}
+
+.notes.show{
+  right:0;
+}
+
+.closesidebarBtn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:red;
+  color:white;
+  border:none;
+  font-size:16px;
+  cursor:pointer;
+  padding:4px 8px;
+  border-radius:4px;
+}
+
+/* accordion buttons */
+
+.noteBtn{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  background:#0093A1;
+  color:white;
+  font-weight:bold;
+  text-align:left;
+  cursor:pointer;
+  border-radius:4px;
+}
+
+.noteBtn:hover{
+  background:#001bb3;
+}
+
+/* accordion content */
+
+.noteContent{
+  display:none;
+  padding:10px;
+  border:1px solid #ddd;
+  border-top:none;
+  background:#f9f9f9;
+}
+
+</style>
+
+
+<script>
+
+/* sidebar open close */
+
+function togglesidebarNotes(){
+  var box=document.getElementById("notesBox");
+  box.classList.toggle("show");
+}
+
+
+/* accordion toggle */
+
+function toggleNote(num){
+
+  const content=document.getElementById("noteContent"+num);
+
+  if(content.style.display==="block"){
+    content.style.display="none";
+  }else{
+    content.style.display="block";
+  }
+
+}
+
+</script>
+<!-- ========= Buttan Configure Details List stop Hare  ---------- ============ -->
+
+<!-- ==============================================footer stop================================================================================ -->
+
+
+
+
+
+<!-- ====================-- User Login Details code and script start --============================== --> 
+<style>
+
+#logout-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#logout-btn:hover {
+  background-color: #e53935;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  background-color: rgb(8, 8, 8);
+  color: white;
+  border: 1px solid rgb(1, 45, 75);
+  border-radius: 4px;
+  padding: 5px;
+}
+
+/* right side group */
+.right-box {
+  margin-left: auto;   /* 🔥 main trick */
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#username {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(243, 243, 242);
+  cursor: pointer;
+}
+
+</style>
+
+
+<script>
+
+const apiKey = "AIzaSyBe-AlG9lpyXyC7KV-AavR6tbqOc75iYdM";
+const sheetId = "1ZcLYgP459FzX9eE2-r3yOxdatRyEt-rPeOSvbxRINqU";
+const range = 'ADMIN!C:K';
+
+let users = {};
+let currentUser = "";
+
+/* ================= COLUMN CONFIG ================= */
+/* 👉 C=0, D=1, E=2, F=3, G=4, H=5, I=6 */
+
+const COL = {
+  enabled: 0,
+  userId: 1,
+  password: 2,
+  status: 3,
+  displayName: 4,
+  vcrauth: 5,
+  report: 6,
+  perms: 5
+};
+
+/* ================= USERNAME DISPLAY ================= */
+
+function setUsernameDisplays(name) {
+  document.getElementById("username").innerText = name || "";
+}
+
+function clearUsernameDisplays() {
+  document.getElementById("username").innerText = "";
+}
+
+/* ================= FETCH USER DATA ================= */
+
+async function fetchUserData() {
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+
+  try {
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const rows = data.values;
+    users = {};
+
+    for (let i = 1; i < rows.length; i++) {
+
+      const row = rows[i];
+
+      if (row[COL.enabled] === "2") {
+
+        users[row[COL.userId]] = {
+          password: row[COL.password],
+          displayName: row[COL.displayName],
+          status: row[COL.status]?.toLowerCase() || "unlocked",
+          reportAuth: row[COL.report] || "",
+          vcrauth: row[COL.vcrauth] || ""
+        };
+
+      }
+    }
+
+    startLoginPrompt();
+
+  } catch (error) {
+    alert("Failed to load user data");
+    console.error(error);
+  }
+}
+
+/* ================= PROMPT LOGIN ================= */
+
+function startLoginPrompt() {
+
+  while (true) {
+
+    let userId = prompt("Enter User ID:");
+    let password = prompt("Enter Password:");
+
+    if (!userId || !password) {
+      alert("Enter valid details first!");
+      continue;
+    }
+
+    userId = userId.trim();
+
+    if (!users[userId] || users[userId].password !== password) {
+      alert("Invalid User ID or Password!");
+      continue;
+    }
+
+    const user = users[userId];
+
+    /* ===== STATUS CHECK ===== */
+
+    if (user.status === "locked") {
+      alert("Your account is locked! - Please Contect Admin +91-9756735792");
+      continue;
+    }
+
+    const expiryDate = Date.parse(user.status);
+
+    if (!isNaN(expiryDate)) {
+
+      const today = new Date();
+      const expiry = new Date(expiryDate);
+      const diffDays = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        alert("Your Licence Expired, Contact Admin");
+        continue;
+      } 
+      else if (diffDays <= 5) {
+        alert(`Your licence will expire in ${diffDays} days`);
+      }
+    }
+
+    /* ===== SUCCESS LOGIN ===== */
+
+    currentUser = userId;
+
+    setUsernameDisplays(user.displayName);
+
+    document.getElementById("userid").innerText = currentUser;
+    document.getElementById("reportauth").innerText = user.reportAuth;
+    document.getElementById("vcrauth").innerText = user.vcrauth;
+
+    alert("Login Successful ✅");
+      fetchGlobalMessage();
+
+    break;
+  }
+}
+
+/* ================= USER DETAILS POPUP ================= */
+
+function showUserDetails() {
+
+  const userid = document.getElementById("userid").innerText;
+  const username = document.getElementById("username").innerText;
+  const reportauth = document.getElementById("reportauth").innerText;
+  const vcrauth = document.getElementById("vcrauth").innerText;
+
+  alert(
+    "USER DETAILS\n\n" +
+    "User ID : " + userid + "\n" +
+    "User Name : " + username + "\n" +
+    "Report Auth : " + reportauth + "\n" +
+    "User Code : " + vcrauth
+  );
+}
+
+/* ================= LOGOUT ================= */
+
+function logout() {
+  currentUser = "";
+  clearUsernameDisplays();
+  location.reload();
+}
+
+
+async function fetchGlobalMessage() {
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/ADMIN!J3:J3?key=${apiKey}`;
+
+  try {
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const message = (data.values && data.values.length) ? data.values[0][0] : "";
+
+    const globalMessageDiv = document.getElementById("globalMessage");
+
+    if (message && message.trim() !== "") {
+
+      globalMessageDiv.innerText = message;
+      globalMessageDiv.style.display = "inline";
+
+    } 
+    else {
+
+      globalMessageDiv.style.display = "none";
+
+    }
+
+  } 
+  catch (error) {
+
+    console.error("Error fetching global message:", error);
+
+  }
+
+}
+
+/* ================= LOAD ================= */
+
+// window.onload = fetchUserData;
+
+</script>
+
+<!-- ====================-- User Login Details code and script stop --============================== --> 
