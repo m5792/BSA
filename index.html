@@ -295,7 +295,81 @@ style="position:absolute;right:10px;top:10px;font-size:20px;">✖</button>
 
 <!-- bsastudentserch div buttan content start ----  Start ------- -->
 <div id="bsastudentserch" class="report-content">
-hello 
+
+  
+<div style="
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+align-items:center;
+border:2px solid #333;
+padding:12px;
+margin-bottom:20px;
+border-radius:10px;
+background:#f9fbfc;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+"> 
+
+<label >Select Session*</label>
+<select id="SESSIONYEAR"  required  style="padding:6px; border-radius:6px; border:1px solid #ccc; width:130px;" >
+        <option value="2025-26">2025-26</option>    
+        <option value="2024-25">2024-25</option>
+        <option value="2023-24">2023-24</option>
+</select>
+
+<label >Select Class:</label>
+<select id="CLASSUSER" style="padding:6px; border-radius:6px; border:1px solid #ccc; width:130px;" >
+<option value="">Select Class</option>
+<option value="All">All Classes</option>
+<option>Pre-Nursery</option>
+<option>NURSERY - A</option>
+<option>NURSERY - B</option>
+<option>LKG - A</option>
+<option>LKG - B</option>
+<option>UKG</option>
+<option>UKG - A</option>
+<option>UKG - B</option>
+<option>1st</option>
+<option>2nd</option>
+<option>3rd</option>
+<option>4th</option>
+<option>5th</option>
+<option>6th</option>
+</select>
+
+
+<span style="color: rgb(2, 61, 81); font-size: 120%; font-weight: bold;">Search Student Details</span>
+<input type="text" id="serchbarbsaSerch" placeholder="🔍 Search..." onkeyup="searchbsaSerchTable()" style="padding:6px; border-radius:6px; border:1px solid #ccc; width:130px; width:400px;" >
+
+<div id="rowCountDisplay" style="margin: 10px 0; font-weight: bold;"></div>
+
+</div>
+<br/>
+
+
+<button onclick="printSTUDENTtable()" style="background-color: black;color: white; font-size: 16px;">🖨️ Print</button>
+
+<style>
+  #tableHeadbsaSerch th {
+  position: sticky;
+  top: 0;
+  background-color: #004d80;
+  color: white;
+  z-index: 10;
+}
+</style>
+<div id="classWrapper" style="max-height: 500px; overflow-y: auto;">
+  <table style="width:100%; border-collapse: collapse;">
+    <thead id="tableHeadbsaSerch"></thead>
+    <tbody id="tableBodybsaSerch"></tbody>
+  </table>
+</div>
+
+<p id="classOPTIONMessage" style="color: rgb(2, 65, 109); text-align: center;font-size: 20px;">Select a Class Option first for Details</p>
+
+<div id="registerDetails" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+
 </div>
 <!-- bsastudentserch div buttan content stop ----  xxx ------- -->  
 
@@ -303,6 +377,23 @@ hello
 <!-- Transfer Certificate (bsaTC) div buttan content start ----  Start ------- -->
 <div id="bsaTC" class="report-content">
 
+<!-- ===== toggleNote BUTTON 10 start ===== -->
+<button class="noteBtn" onclick="toggleNote(10)">⚙ TC Summary Report  | <span style="color: rgb(248, 204, 204);"> Total Certificate Issued:</span> <span id="totalTCCount">0</span></button>
+
+<div id="noteContent10" class="noteContent">
+  <button onclick="printTCSummary()" style="margin-left:20px; padding:5px 10px; cursor:pointer;"> Print</button>
+  
+<div id="tcSummaryTable"></div>
+
+</div>  <!-- ===== toggleNote BUTTON 10 stop  ===== -->
+
+
+<!-- ===== toggleNote BUTTON 11 start ===== -->
+<button class="noteBtn" onclick="toggleNote(11)" >⚙ Print TC (Transfer Certificate)  |  <span id="lastTCNumber" style="margin: 10px 0; font-size: 14px; font-weight: bold; color:rgb(0, 45, 128)n;"></button>
+
+<div id="noteContent11" class="noteContent">
+
+  
    <div id="mytoolsbar" style="padding: 5px 10px; background-color: rgb(226, 226, 226); border-radius: 10px;">
 <span style="color: rgb(0, 60, 65); font-size: 16px;font-weight: bold;"> Select Student A. No.</span>
   <select id="studentTCDropdown" >
@@ -338,6 +429,10 @@ hello
     </div>
   </div> <!-- TC certificate stop-->
 <br/><br/><br/><br/>
+
+
+</div>  <!-- ===== toggleNote BUTTON 11 stop  ===== -->
+
 </div>
 <!-- Transfer Certificate (bsaTC) div buttan content stop ----  xxx ------- -->  
 
@@ -934,9 +1029,9 @@ const classActivity = {
 "UKG - A":["Games","Drawing","Moral Values / G.K","Cleanliness","Homework","Attendance"],
 "UKG - B":["Games","Drawing","Moral Values / G.K","Cleanliness","Homework","Attendance"],
 
-"1st":["Games","Drawing","Moral Values / G.K","Cleanliness","Homework","Attendance"],
+"1st":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
 
-"2nd":["Games","Drawing","Moral Values / G.K","Cleanliness","Homework","Attendance"],
+"2nd":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
 "3rd":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
 
 "4th":["Games","Drawing","Moral Values / G.K","Cleanliness","Scout Guide","Homework","Attendance"],
@@ -951,7 +1046,7 @@ const activityIndex = {
 "Drawing":34,
 "Moral Values / G.K":33,
 "Cleanliness":35,
-"Scout Guide":35,
+"Scout Guide":38,
 "Homework":"Regular",
 "Attendance":36
 };
@@ -1197,7 +1292,7 @@ CO- SCHOLASTIC PERFORMANCE - FINAL TERMS
 <table style="width:100%"> 
 <tr> 
 <td style="background-color: whit ;text-align: left ; color: balck ;"><span style="color: black ;font-size:95%; font-weight: bold;">Grade: ${grade} | Class Position: <span style="color: green ;font-size:95%; font-weight: bold;"> ${position} </span>  </span>   </span></td>
-<td style="background-color: whit ;text-align: left ; color: balck ;"><span style="color: black ;font-size:95%; font-weight: bold;">Promotion For Granted to Next Class: </span>Granted </td>
+<td style="background-color: whit ;text-align: left ; color: balck ;"><span style="color: black ;font-size:95%; font-weight: bold;">Promotion For Granted to Next Class: </span> ${row[40]} </td>
 </tr>
 </table>
 
@@ -1241,12 +1336,11 @@ B++ (60-70), B+ (50-60), B (40-50), C (33-40)
 
 <br>
 
-<span style="color:blue;font-size:95%">
-Issue Date : ${issueDate}
-</span>
+
 
 
 `;
+// issue Date ke lye ye line add kro "Issue Date : ${issueDate}"
 // ------ ========== ----------------Marksheet HTML div stop Hare - ================ ----
 }
 
@@ -1796,6 +1890,243 @@ function globalStudentSearch() {
 <!-- xxx ====================== ------------ Student Table Serchbar Script Stop --------- ===================== xxx ============== -->
 
 
+
+
+
+
+
+<!-- --------------- Start ------===================== Student serch  summry table  (studentCLASStable) (tableHeadbsaSerch) --------------- Start ------===================== -->
+<script>
+const apibsaSerchKey = "AIzaSyCerUAdaqNQ7mxjgNBbAeiHDEKgN0Dzoao";
+const sheetbsaSerchId = "1BiADwSV64zXPz0UyVmYN7BlyW8DiCylgT3-bSrnIk38";
+const rangebsaSerch = 'INDEX!A:AS';
+const rangeRagisterID = 'RAGISTER!A:Q';
+
+let allbsaSerchRows = [];
+let allRegisterRows = [];
+
+async function fetchBSASRtable() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetbsaSerchId}/values/${rangebsaSerch}?key=${apibsaSerchKey}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const rows = data.values || [];
+        allbsaSerchRows = rows.slice(1);
+
+        await fetchCLASSdata(); // Fetch register data after voucher
+        studentCLASStable();
+    } catch (error) {
+        console.error("Error fetching voucher data:", error);
+        document.getElementById('tableBodybsaSerch').innerHTML = "<tr><td colspan='11'>Error loading data.</td></tr>";
+    }
+}
+
+async function fetchCLASSdata() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetbsaSerchId}/values/${rangeRagisterID}?key=${apibsaSerchKey}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        allRegisterRows = data.values.slice(1) || [];
+    } catch (error) {
+        console.error("Error fetching register data:", error);
+    }
+}
+function studentCLASStable() {
+    const selectedVoucher = document.getElementById("CLASSUSER").value.trim().toUpperCase();
+    const selectedSession = document.getElementById("SESSIONYEAR")?.value.trim().toUpperCase();
+
+    const wrapper = document.getElementById("classWrapper");
+    const message = document.getElementById("classOPTIONMessage");
+
+    if (!selectedVoucher || !selectedSession) {
+        wrapper.style.display = "none";
+        message.style.display = "block";
+        return;
+    }
+
+    wrapper.style.display = "block";
+    message.style.display = "none";
+
+    const tableBodybsaSerch = document.getElementById("tableBodybsaSerch");
+    const tableHead = document.getElementById("tableHeadbsaSerch");
+
+    const studentVouchers = [
+       "PRE-NURSERY", "NURSERY - A", "NURSERY - B", "LKG - A", "LKG - B",
+        "UKG - A", "UKG - B", "1ST", "2ND", "3RD", "4TH", "5TH", "6TH"
+    ];
+
+    let headerHTML = "";
+    let visibleIndexes = [];
+
+    if (selectedVoucher === "ALL" || studentVouchers.includes(selectedVoucher)) {
+        headerHTML = `
+            <tr>
+                <th>ANo.</th><th>Class</th><th>Student Name</th><th>Father Name</th>
+                <th>Mother Name</th><th>Date Of Birth</th><th>Roll No.</th><th>PEN No</th><th>Attendance</th>
+            </tr>`;
+        visibleIndexes = [0,1,2,3,4,5,6,7,36];
+    } else if (selectedVoucher === "PRE-NURSERY") {
+        headerHTML = `
+            <tr style="background-color: green; color: white;">
+                <th>ANo.</th><th>Class</th><th>Student Name</th><th>Father Name</th>
+                <th>Mother Name</th><th>Date Of Birth</th><th>Roll No.</th>
+            </tr>`;
+        visibleIndexes = [0, 1, 2, 3,4,5,6];
+    } else {
+        visibleIndexes = [...Array(12).keys()];
+    }
+
+    tableHead.innerHTML = headerHTML;
+
+    const searchTerm = document.getElementById("serchbarbsaSerch")?.value.toLowerCase() || "";
+
+    // ✅ FILTER & SORT BEFORE USE
+    const filteredRows = allbsaSerchRows.filter(row => {
+        const rowVoucher = row[1]?.trim().toUpperCase();
+        const rowSession = row[39]?.trim().toUpperCase();
+
+        const matchesVoucher = selectedVoucher === "ALL"
+            ? studentVouchers.includes(rowVoucher)
+            : rowVoucher === selectedVoucher;
+
+        const matchesSession = !selectedSession || rowSession === selectedSession;
+
+        const matchesSearch = searchTerm === "" || row.some(cell =>
+            (cell || "").toLowerCase().includes(searchTerm)
+        );
+
+        return matchesVoucher && matchesSession && matchesSearch;
+    });
+
+    filteredRows.sort((a, b) => (parseInt(b[0]) || 0) - (parseInt(a[0]) || 0));
+
+    // ✅  stundent no start
+    tableBodybsaSerch.innerHTML = filteredRows.length
+        ? filteredRows.map(row => {
+            return `<tr>${visibleIndexes.map((i, idx) => {
+                const cellData = row[i] || "";
+                if (i === 0) {
+                    return `<td style="color:blue;cursor:pointer;" onclick="showRegisterDetails('${cellData}')">${cellData}</td>`;
+                }
+                return `<td>${cellData}</td>`;
+            }).join("")}</tr>`;
+        }).join("")
+        : `<tr><td colspan="${visibleIndexes.length}" style="text-align:center;">No matching data found.</td></tr>`;
+
+    // ✅ Total Count Show
+    const rowCountDisplay = document.getElementById("rowCountDisplay");
+    rowCountDisplay.innerHTML = `👨‍🎓 Total Student in This Class: <span style="color: Black;">${filteredRows.length}</span>`;
+    // stundent no stop
+}
+
+function printSTUDENTtable() {
+    const wrapper = document.getElementById("classWrapper");
+    const rowCount = document.getElementById("rowCountDisplay");
+
+    const selectedVoucher = document.getElementById("CLASSUSER")?.value || "";
+    const selectedSession = document.getElementById("SESSIONYEAR")?.value || "";
+
+    if (!wrapper || wrapper.style.display === "none") {
+        alert("No table data available to print!");
+        return;
+    }
+
+    const printWindow = window.open("", "", "height=700,width=1000");
+
+    printWindow.document.write(`<html><head><title>Print Table</title>`);
+    printWindow.document.write(`
+        <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+            th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+            th { background-color: #004d80; color: white; }
+            .info-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                gap: 10px;
+            }
+        </style>
+    `);
+    printWindow.document.write(`</head><body>`);
+
+    // ✅ Info bar with voucher, session and row count in one row
+    printWindow.document.write(`
+        <div class="info-bar">
+            <div>📚 Class: ${selectedVoucher}</div>
+            <div>📅 Session: ${selectedSession}</div>
+            <div>${rowCount?.innerHTML || ""}</div>
+        </div>
+    `);
+
+    // ✅ Add table HTML
+    printWindow.document.write(wrapper.innerHTML);
+
+    printWindow.document.write(`</body></html>`);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+}
+
+
+
+//
+function searchbsaSerchTable() {
+    studentCLASStable();
+}
+//
+function showRegisterDetails(ano) {
+    const resultDiv = document.getElementById("registerDetails");
+    const matched = allRegisterRows.find(row => (row[0] || "").trim() === ano);
+
+    if (matched) {
+        const detailHtml = `
+            <h3>Student Details for A No: ${ano}</h3>
+            <strong style="color: #b44403; font-weight: bold;">Student Name: ${matched[2] || ""} </strong> 
+            <ul>
+                <li><strong>Class:</strong> ${matched[1] || ""}</li>
+                <li><strong>Date Of Birth:</strong> ${matched[3] || ""}</li>
+                <li><strong>Father Name:</strong> ${matched[4] || ""}</li>
+                <li><strong>Mother Name:</strong> ${matched[5] || ""}</li>
+                <li><strong>Adhar No.:</strong> ${matched[6] || ""}</li>
+                <li><strong>Mobile:</strong> ${matched[7] || ""}</li>
+                <li><strong>Apar No.:</strong> ${matched[8] || ""}</li>
+                <li><strong>Address:</strong> ${matched[9] || ""}</li>
+                <li><strong>PEN No:</strong> ${matched[10] || ""}</li>
+                <li><strong>Religion:</strong> ${matched[11] || ""} / ${matched[12] || ""}</li>
+              
+                <li>
+  <strong>Status:</strong>
+  ${matched[14] === "R" ? "<span style='color: green;'>Regular</span>" 
+  : matched[14] === "T" ? "<span style='color: red;'>Transfer</span>" 
+  : (matched[14] || "")}
+</li>
+
+         
+            </ul>
+        `;
+        resultDiv.innerHTML = detailHtml;
+    } else {
+        resultDiv.innerHTML = `<p style="color:red;">No student found for A No: ${ano}</p>`;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("CLASSUSER").addEventListener("change", studentCLASStable);
+    document.getElementById("SESSIONYEAR").addEventListener("change", studentCLASStable);
+    fetchBSASRtable();
+});
+</script>
+
+<!-- --------------- xxx ------===================== Student serch  summry table  (studentCLASStable) --------------- xxx ------===================== -->
+
+
+
+
 <!-- ====-- start --===========-----Transfer Certificate script and code Start ============-->
 
   <style>
@@ -1909,6 +2240,7 @@ async function fetchTCdata() {
   });
 
   getHighestTCNumber(); // Add this line fot last tc no
+  generateTCSummaryTable(); // 👈 TC Summary
 }
 
 function generateTCTable(row) {
@@ -1966,9 +2298,6 @@ document.getElementById("studentTCDropdown").addEventListener("change", function
     document.getElementById("studentTCInfo").innerHTML = "";
   }
 });
-
-
-
 
 function printCertificate() {
   const selectedValue = document.getElementById("studentTCDropdown").value;
@@ -2103,6 +2432,95 @@ function getHighestTCNumber() {
 
 //
 
+
+function generateTCSummaryTable() {
+
+  const container = document.getElementById("tcSummaryTable");
+  const totalSpan = document.getElementById("totalTCCount");
+
+  if (!allData || allData.length === 0) {
+    container.innerHTML = "No TC data found.";
+    totalSpan.textContent = "0";
+    return;
+  }
+
+  // ✅ Copy allData (T status already filtered hai fetch me)
+  const sortedData = [...allData];
+
+  // ✅ Sort by Certificate No (Ascending)
+  // jinke paas certificate no nahi hai unhe last me bhejo
+  sortedData.sort((a, b) => {
+    const aNum = parseInt(a[15]);
+    const bNum = parseInt(b[15]);
+
+    if (isNaN(aNum)) return 1;   // a last me
+    if (isNaN(bNum)) return -1;  // b last me
+
+    return aNum - bNum;
+  });
+
+  let html = `
+    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+      <thead>
+        <tr style="background:#003636; color:#fff;">
+          <th style="border:1px solid #000; padding:6px;">Admission No</th>
+          <th style="border:1px solid #000; padding:6px;">Student Name</th>
+          <th style="border:1px solid #000; padding:6px;">Father Name</th>
+          <th style="border:1px solid #000; padding:6px;">Certificate No</th>
+          <th style="border:1px solid #000; padding:6px;">Date of Issue</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  sortedData.forEach(row => {
+    html += `
+      <tr>
+        <td style="border:1px solid #000; padding:6px;">${row[0] || ""}</td>
+        <td style="border:1px solid #000; padding:6px;">${row[2] || ""}</td>
+        <td style="border:1px solid #000; padding:6px;">${row[4] || ""}</td>
+        <td style="border:1px solid #000; padding:6px;">${row[15] || ""}</td>
+        <td style="border:1px solid #000; padding:6px;">${row[21] || ""}</td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+
+  container.innerHTML = html;
+
+  // ✅ Total ONLY issued certificates (same as before)
+  const issuedCount = allData.filter(row => row[15] && row[15].trim() !== "").length;
+  totalSpan.textContent = issuedCount;
+}
+
+function printTCSummary() {
+
+  const content = document.getElementById("tcSummaryTable").innerHTML;
+
+  const win = window.open('', '', 'width=900,height=700');
+
+  win.document.write(`
+    <html>
+      <head>
+        <title>TC Summary</title>
+        <style>
+          body { font-family: Arial; padding:20px; }
+          table { width:100%; border-collapse: collapse; }
+          th, td { border:1px solid #000; padding:6px; text-align:left; }
+          th { background:#003636; color:#fff; }
+          h2 { text-align:center; }
+        </style>
+      </head>
+      <body onload="window.print(); window.close();">
+        <h2>Transfer Certificate Summary</h2>
+        ${content}
+      </body>
+    </html>
+  `);
+
+  win.document.close();
+}
 
 // Fetch on page load
 fetchTCdata();
@@ -2942,7 +3360,7 @@ margin:15px;
 padding:15px;
 border-radius:12px;
 box-shadow:0 3px 8px rgba(0,0,0,0.2);
-height: 800px;
+height: 1000px;
 }
 .report-btn {
   padding: 6px 10px;
