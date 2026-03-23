@@ -1066,7 +1066,7 @@ let idx = activityIndex[act];
 let grade = "";
 
 if(typeof idx === "number"){
-    grade = row[idx] || "";
+    grade = row[idx] || "-";
 }else{
     grade = idx;   // "Regular" fixed text
 }
@@ -1110,7 +1110,7 @@ else if(percentage>=60) grade="B++";
 else if(percentage>=50) grade="B+";
 else if(percentage>=40) grade="B";
 else if(percentage>=33) grade="C";
-else grade="Pass"; // Faill
+else grade="Pass"; // faill
 
 // span ke liye value
 document.getElementById("sNameSpan").innerHTML = `${row[2]}`;
