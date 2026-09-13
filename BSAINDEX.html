@@ -237,7 +237,463 @@ box-shadow:0 2px 8px rgba(249, 219, 219, 0.1);
   <!-- Application Content -->
   <div id="content">
   <!-- =============== ----- Home Section Start ------ ============== -- Start --======================== -->   
-    <div id="homePage" class="page active"></div>
+    <div id="homePage" class="page active">
+
+
+
+  
+                   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>School ERP Dashboard</title>
+  <style>
+    /* Unique Namespace Class Prefix: _BSA_ for Layout UI */
+    ._BSA_dashboard_wrapper {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f1f5f9;
+      padding: 24px;
+      color: #0f172a;
+    }
+
+    /* Left Sliding Search Drawer - Top se 50px Niche */
+    ._BSA_sliding_panel {
+      position: fixed; top: 25px; left: -420px; width: 380px; height: calc(100% - 50px);
+      background: #ffffff; box-shadow: 4px 0 20px rgba(0,0,0,0.15); z-index: 1000;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 24px;
+      box-sizing: border-box; overflow-y: auto; border-top-right-radius: 12px;
+    }
+    ._BSA_sliding_panel._BSA_open { left: 0; }
+    
+    /* Top Div Right aligned Close Button */
+    ._BSA_panel_header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    ._BSA_panel_header h3 { margin: 0; font-size: 18px; color: #0f172a; }
+
+    ._BSA_close_panel_btn_top {
+      background: none; border: none; font-size: 26px; cursor: pointer;
+      color: #64748b; font-weight: bold; line-height: 1; padding: 0 4px;
+    }
+    ._BSA_close_panel_btn_top:hover { color: #dc2626; }
+
+    /* Search Control & Inputs */
+    ._BSA_tab_buttons { display: flex; gap: 8px; margin-bottom: 12px; }
+    ._BSA_tab_btn {
+      flex: 1; padding: 8px; border: 1px solid #cbd5e1; background: #f8fafc;
+      border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;
+    }
+    ._BSA_tab_btn._BSA_active { background: #4f46e5; color: #fff; border-color: #4f46e5; }
+
+    ._BSA_search_input {width: 100%; padding: 8px; border-bottom: 2px solid blue; background-color: transparent; color: black;font-size: 13px; margin-bottom: 16px; outline: none;}
+
+    ._BSA_search_select {width: 100%; padding: 8px; border-bottom: 2px solid blue; background-color: transparent; color: black;font-size: 13px; margin-bottom: 16px; outline: none;}
+
+    ._BSA_search_results_box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; display: none; margin-top: 10px;}
+    
+    /* Dynamic 2-Column Key-Value Layout for Result Details */
+    ._BSA_result_row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: flex-start; 
+      margin-bottom: 8px; 
+      font-size: 13px; 
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 4px;
+    }
+    ._BSA_result_row label { 
+      font-size: 11px; 
+      color: #64748b; 
+      text-transform: uppercase; 
+      font-weight: 700; 
+      min-width: 110px;
+      padding-right: 8px;
+    }
+    ._BSA_result_row span { 
+      font-weight: 600; 
+      color: #0f172a; 
+      word-break: break-word; 
+      text-align: right;
+      flex-grow: 1;
+    }
+
+    ._BSA_cert_btn_group { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    ._BSA_btn_cert {
+      padding: 9px; border: none; border-radius: 6px; font-weight: 600;
+      cursor: pointer; font-size: 12px; text-align: center; color: #fff;
+    }
+    ._BSA_btn_exp { background: #059669; }
+    ._BSA_btn_char { background: #0284c7; }
+
+    /* Header Banner */
+    ._BSA_school_brand_banner {
+      display: flex; align-items: center; background: #ffffff; padding: 20px 30px;
+      border-radius: 16px; box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0; margin-bottom: 24px;
+    }
+    ._BSA_logo_box { width: 70px; }
+    ._BSA_logo_circle {
+      width: 60px; height: 60px; background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;
+    }
+    ._BSA_header_center_content { flex-grow: 1; text-align: center; }
+    ._BSA_header_center_content h1 { margin: 0; font-size: 26px; color: #0f172a; font-weight: 800; }
+    ._BSA_divider_line { height: 2px; background: linear-gradient(90deg, transparent, #0f172a, transparent); width: 60%; margin: 8px auto; }
+    ._BSA_address_text { margin: 0; font-size: 14px; font-weight: 600; color: #334155; }
+    ._BSA_tagline_text { margin: 4px 0; font-size: 15px; font-weight: 700; color: #2563eb; }
+    ._BSA_meta_badges { margin-top: 6px; display: flex; justify-content: center; gap: 16px; font-size: 12px; color: #64748b; }
+
+    /* Dashboard Main Cards */
+    ._BSA_cards_grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+    ._BSA_dash_card { background: #ffffff; border-radius: 14px; padding: 18px; border: 1px solid #e2e8f0; }
+    
+    ._BSA_director_card {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff;
+      position: relative; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    ._BSA_director_card ._BSA_card_badge { position: absolute; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 10px; font-size: 10px; }
+    ._BSA_director_avatar { width: 48px; height: 48px; background: #ffffff; color: #3730a3; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 8px; }
+
+    ._BSA_stat_card { display: flex; align-items: center; gap: 14px; }
+    ._BSA_stat_icon { font-size: 26px; background: #f8fafc; padding: 12px; border-radius: 12px; }
+    ._BSA_stat_content label { font-size: 11px; font-weight: 600; color: #64748b; display: block; }
+    ._BSA_stat_content h2 { margin: 2px 0; font-size: 22px; font-weight: 800; }
+
+    /* Faculty Section */
+    ._BSA_teachers_section { background: #ffffff; border-radius: 16px; padding: 22px; border: 1px solid #e2e8f0; }
+    ._BSA_teachers_header_flex { display: flex; justify-content: space-between; align-items: center; }
+    ._BSA_teachers_grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
+    ._BSA_teacher_card { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; cursor: pointer; }
+    ._BSA_teacher_avatar { width: 44px; height: 44px; background: #e0e7ff; color: #4338ca; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    ._BSA_class_badge { font-size: 11px; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- Left Sliding Search Drawer -->
+  <div class="_BSA_sliding_panel" id="_BSA_slidingPanel">
+    <div class="_BSA_panel_header">
+      <h3>Quick Directory Search</h3>
+      <button class="_BSA_close_panel_btn_top" onclick="_BSA_toggleSlidePanel()">&times;</button>
+    </div>
+
+    <div class="_BSA_tab_buttons">
+      <button class="_BSA_tab_btn _BSA_active" id="_BSA_btn_staff_tab" onclick="_BSA_switchSearchTab('staff')">Staff Search</button>
+      <button class="_BSA_tab_btn" id="_BSA_btn_student_tab" onclick="_BSA_switchSearchTab('student')">Student Search</button>
+    </div>
+
+    <!-- Real-time Text Filter for Dropdown Search -->
+    <input type="text" class="_BSA_search_input" id="_BSA_searchFilterInput" placeholder="🔍 Type to filter list..." oninput="_BSA_filterOptions()">
+
+    <!-- Dropdown Selector -->
+    <select class="_BSA_search_select" id="_BSA_searchDropdown" size="6" onchange="_BSA_handleSearchSelect()">
+      <option value="">-- Select Item --</option>
+    </select>
+
+    <!-- Search Preview Box -->
+    <div class="_BSA_search_results_box" id="_BSA_searchResultCard">
+      <div id="_BSA_resultContent"></div>
+      <div class="_BSA_cert_btn_group" id="_BSA_staffCertButtons" style="display: none;">
+        <button class="_BSA_btn_cert _BSA_btn_exp" onclick="_BSA_downloadCertificate('experience')">📥 Download Experience Certificate</button>
+        <button class="_BSA_btn_cert _BSA_btn_char" onclick="_BSA_downloadCertificate('character')">📥 Download Character Certificate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard Container -->
+  <div class="_BSA_dashboard_wrapper">
+    
+    <div class="_BSA_school_brand_banner">
+      <div class="_BSA_logo_box"><div class="_BSA_logo_circle">BSA</div></div>
+      <div class="_BSA_header_center_content">
+        <h1 id="_BSA_school-name">BABA SCHOLAR'S ACADEMY</h1>
+        <div class="_BSA_divider_line"></div>
+        <p class="_BSA_address_text" id="_BSA_school-address">Kundeshwari Kashipur (U.S.Nagar), Uttarakhand</p>
+        <p class="_BSA_tagline_text" id="_BSA_school-details">A Co-Educational Medium School</p>
+        <div class="_BSA_meta_badges">
+          <span>Aff. No.: <strong id="_BSA_school-aff">---</strong></span>
+          <span>UDISE: <strong id="_BSA_school-udise">---</strong></span>
+        </div>
+      </div>
+      <div class="_BSA_logo_box"><div class="_BSA_logo_circle">BSA</div></div>
+    </div>
+
+    <div class="_BSA_cards_grid">
+      <!-- Active Director Card -->
+      <div class="_BSA_dash_card _BSA_director_card" id="_BSA_director-card-element">
+        <div class="_BSA_card_badge">Management</div>
+        <div class="_BSA_director_avatar" id="_BSA_dir-card-avatar">D</div>
+        <div class="_BSA_director_details">
+          <label>School Director</label>
+          <h3 id="_BSA_dir-card-name">---</h3>
+          <p id="_BSA_dir-card-phone">📞 ---</p>
+          <small>Active Status</small>
+        </div>
+      </div>
+
+      <div class="_BSA_dash_card">
+        <span style="font-size: 11px; font-weight:700; color:#64748b;">FEE BANK DETAILS</span>
+        <div style="margin-top: 8px; font-size: 12px;">
+          <div><label>Acc No:</label> <strong id="_BSA_card-acc-no">---</strong></div>
+          <div><label>Branch:</label> <span id="_BSA_card-branch">---</span></div>
+          <div><label>IFSC:</label> <span id="_BSA_card-ifsc">---</span></div>
+        </div>
+      </div>
+
+      <div class="_BSA_dash_card _BSA_stat_card">
+        <div class="_BSA_stat_icon">🎓</div>
+        <div class="_BSA_stat_content">
+          <label>Active Students</label>
+          <h2 id="_BSA_cnt-active-students" style="color: #16a34a;">0</h2>
+        </div>
+      </div>
+
+      <div class="_BSA_dash_card _BSA_stat_card">
+        <div class="_BSA_stat_icon">📜</div>
+        <div class="_BSA_stat_content">
+          <label>Exit Students</label>
+          <h2 id="_BSA_cnt-exit-students" style="color: #dc2626;">0</h2>
+        </div>
+      </div>
+
+      <div class="_BSA_dash_card _BSA_stat_card">
+        <div class="_BSA_stat_icon">📋</div>
+        <div class="_BSA_stat_content">
+          <label>Total Register</label>
+          <h2 id="_BSA_cnt-total-students" style="color: #2563eb;">0</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="_BSA_teachers_section">
+      <div class="_BSA_teachers_header_flex">
+       <b>👨‍🏫 Teaching Faculty & Staff</b> <b style="margin:0; cursor:pointer; font-weight: bold; border-bottom: 2px solid black; background: transparent; color: #000;" onclick="_BSA_toggleSlidePanel()" >Search</b>
+        <span class="_BSA_count_badge" id="_BSA_teacher-count" style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:10px; font-size:12px; font-weight:600;">0 Members</span>
+      </div>
+      <div class="_BSA_teachers_grid" id="_BSA_teachers-container"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // Master Global Data Stores (Standard Unprefixed Names)
+    
+
+    let _BSA_currentTab = 'staff';
+    let _BSA_currentSelectedPerson = null;
+
+    function _BSA_initDashboard() {
+      const comp = ERPStore.company;
+      document.getElementById("_BSA_school-name").innerText = comp.name;
+      document.getElementById("_BSA_school-address").innerText = comp.address;
+      document.getElementById("_BSA_school-details").innerText = comp.otherdetails;
+      document.getElementById("_BSA_school-aff").innerText = comp.affno;
+      document.getElementById("_BSA_school-udise").innerText = comp.udisecode;
+
+      document.getElementById("_BSA_card-acc-no").innerText = comp.cmpaccountno;
+      document.getElementById("_BSA_card-branch").innerText = comp.branch;
+      document.getElementById("_BSA_card-ifsc").innerText = comp.ifsc;
+
+      const srList = ERPStore.srragister || [];
+      const totalReg = srList.length;
+      const exitCnt = srList.filter(s => s.certificateNo && s.certificateNo.trim() !== "").length;
+      const activeCnt = totalReg - exitCnt;
+
+      document.getElementById("_BSA_cnt-total-students").innerText = totalReg;
+      document.getElementById("_BSA_cnt-exit-students").innerText = exitCnt;
+      document.getElementById("_BSA_cnt-active-students").innerText = activeCnt;
+
+      _BSA_renderActiveStaffGrid();
+      _BSA_populateSearchDropdown();
+    }
+
+    function _BSA_renderActiveStaffGrid() {
+      const directorObj = staffStore.find(s => s.designation.toLowerCase() === "director" && s.status === "active");
+      if (directorObj) {
+        document.getElementById("_BSA_dir-card-avatar").innerText = directorObj.name.charAt(0);
+        document.getElementById("_BSA_dir-card-name").innerText = directorObj.name;
+        document.getElementById("_BSA_dir-card-phone").innerText = `📞 ${directorObj.mobno}`;
+      }
+
+      const activeTeachers = staffStore.filter(s => s.designation.toLowerCase() !== "director" && s.status === "active");
+      const container = document.getElementById("_BSA_teachers-container");
+      document.getElementById("_BSA_teacher-count").innerText = `${activeTeachers.length} Active Staff`;
+
+      container.innerHTML = "";
+      activeTeachers.forEach((staff) => {
+        const card = document.createElement("div");
+        card.className = "_BSA_teacher_card";
+        card.innerHTML = `
+          <div class="_BSA_teacher_avatar">${staff.name.charAt(0)}</div>
+          <div>
+            <h4 style="margin:0;">${staff.name}</h4>
+            <span class="_BSA_class_badge">${staff.classTeacher}</span>
+            <p style="margin:4px 0 0 0; font-size:11px; color:#64748b;">📞 ${staff.mobno}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function _BSA_toggleSlidePanel() {
+      document.getElementById("_BSA_slidingPanel").classList.toggle("_BSA_open");
+    }
+
+    function _BSA_switchSearchTab(tab) {
+      _BSA_currentTab = tab;
+      document.getElementById("_BSA_btn_staff_tab").classList.toggle("_BSA_active", tab === 'staff');
+      document.getElementById("_BSA_btn_student_tab").classList.toggle("_BSA_active", tab === 'student');
+      document.getElementById("_BSA_searchResultCard").style.display = 'none';
+      document.getElementById("_BSA_searchFilterInput").value = "";
+      _BSA_populateSearchDropdown();
+    }
+
+    function _BSA_populateSearchDropdown() {
+      const select = document.getElementById("_BSA_searchDropdown");
+      select.innerHTML = "";
+
+      if (_BSA_currentTab === 'staff') {
+        staffStore.forEach(staff => {
+          const opt = document.createElement("option");
+          opt.value = staff.empCode;
+          opt.innerText = `${staff.empCode} - ${staff.name} (${staff.status.toUpperCase()})`;
+          select.appendChild(opt);
+        });
+      } else {
+        ERPStore.srragister.forEach(student => {
+          const opt = document.createElement("option");
+          opt.value = student.sNo;
+          const statusTag = (student.certificateNo && student.certificateNo.trim() !== "") ? "[EXIT]" : "[ACTIVE]";
+          opt.innerText = `SR ${student.sNo} - ${student.studentName} ${statusTag}`;
+          select.appendChild(opt);
+        });
+      }
+    }
+
+    function _BSA_filterOptions() {
+      const filter = document.getElementById("_BSA_searchFilterInput").value.toLowerCase();
+      const select = document.getElementById("_BSA_searchDropdown");
+      const options = select.options;
+
+      for (let i = 0; i < options.length; i++) {
+        const txt = options[i].innerText.toLowerCase();
+        options[i].style.display = txt.includes(filter) ? "" : "none";
+      }
+    }
+
+    function _BSA_handleSearchSelect() {
+      const val = document.getElementById("_BSA_searchDropdown").value;
+      const resultCard = document.getElementById("_BSA_searchResultCard");
+      const resultContent = document.getElementById("_BSA_resultContent");
+      const certBtns = document.getElementById("_BSA_staffCertButtons");
+
+      if (!val) {
+        resultCard.style.display = 'none';
+        return;
+      }
+
+      resultCard.style.display = 'block';
+
+      if (_BSA_currentTab === 'staff') {
+        const staff = staffStore.find(s => s.empCode === val);
+        _BSA_currentSelectedPerson = staff;
+        certBtns.style.display = 'flex';
+
+        resultContent.innerHTML = `
+          <div class="_BSA_result_row"><label>Status</label><span style="color:${staff.status === 'active' ? '#16a34a' : '#dc2626'}">${staff.status.toUpperCase()}</span></div>
+          <div class="_BSA_result_row"><label>Name</label><span>${staff.name} (${staff.empCode})</span></div>
+          <div class="_BSA_result_row"><label>Role / Class</label><span>${staff.designation} - ${staff.classTeacher}</span></div>
+          <div class="_BSA_result_row"><label>Mobile</label><span>${staff.mobno}</span></div>
+          <div class="_BSA_result_row"><label>Guardian</label><span>${staff.guardianName}</span></div>
+          <div class="_BSA_result_row"><label>Appoint / Exit</label><span>${staff.appointmentDate || 'N/A'} to ${staff.exitDate || 'Present'}</span></div>
+          <div class="_BSA_result_row"><label>Remarks</label><span>${staff.otherInfo || 'None'}</span></div>
+        `;
+      } else {
+        const student = ERPStore.srragister.find(s => s.sNo === val);
+        _BSA_currentSelectedPerson = student;
+        certBtns.style.display = 'none';
+
+        const isExit = student.certificateNo && student.certificateNo.trim() !== "";
+
+        /* Formatted 2-Column Key-Value Preview with TC Certificate No Included */
+        resultContent.innerHTML = `
+          <div class="_BSA_result_row"><label>Status</label><span style="color:${isExit ? '#dc2626' : '#16a34a'}">${isExit ? 'EXIT / TC ISSUED' : 'ACTIVE STUDENT'}</span></div>
+          <div class="_BSA_result_row"><label>SR No.</label><span>${student.sNo}</span></div>
+          <div class="_BSA_result_row"><label>Name</label><span>${student.studentName}</span></div>
+          <div class="_BSA_result_row"><label>Father's Name</label><span>${student.fatherName || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Mother's Name</label><span>${student.motherName || '-'}</span></div>
+          <div class="_BSA_result_row"><label>DOB</label><span>${student.dob || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Admission Date</label><span>${student.admissionDate || '-'}</span></div>
+          <div class="_BSA_result_row"><label>TC / Cert No.</label><span style="color:${isExit ? '#dc2626' : '#64748b'};">${student.certificateNo || 'Not Issued'}</span></div>
+          <div class="_BSA_result_row"><label>TC Present</label><span>${student.tcpresent || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Transfer Date</label><span>${student.transferDate || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Aadhar No</label><span>${student.aadharNo || '-'}</span></div>
+          <div class="_BSA_result_row"><label>APAAR / PEN</label><span>${student.apaarNo || '-'} / ${student.penNo || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Category</label><span>${student.religion || '-'} (${student.caste || '-'})</span></div>
+          <div class="_BSA_result_row"><label>Contact</label><span>📞 ${student.mobileNo || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Address</label><span>${student.address || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Conduct</label><span>${student.generalConduct || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Leaving Reason</label><span>${student.reasonForLeaving || '-'}</span></div>
+          <div class="_BSA_result_row"><label>Remarks</label><span>${student.otherRemarks || '-'}</span></div>
+        `;
+      }
+    }
+
+    function _BSA_downloadCertificate(type) {
+      if (!_BSA_currentSelectedPerson || _BSA_currentTab !== 'staff') return;
+
+      const comp = ERPStore.company;
+      const staff = _BSA_currentSelectedPerson;
+      
+      const title = type === 'experience' ? 'EXPERIENCE CERTIFICATE' : 'CHARACTER CERTIFICATE';
+      const certText = type === 'experience' 
+        ? `This is to certify that <strong>${staff.name}</strong>, S/D/W of <strong>${staff.guardianName}</strong>, has served as a <strong>${staff.designation}</strong> in our institution from <strong>${staff.appointmentDate}</strong> to <strong>${staff.exitDate || 'Present'}</strong>. During their tenure, their performance was exemplary and satisfactory.`
+        : `This is to certify that <strong>${staff.name}</strong>, working as <strong>${staff.designation}</strong> in <strong>${comp.name}</strong>, bears a commendable moral character and professional ethics.`;
+
+      const certHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${title} - ${staff.name}</title>
+  <style>
+    body { font-family: 'Georgia', serif; padding: 40px; background: #fff; }
+    .cert-box { border: 8px double #1e293b; padding: 40px; text-align: center; max-width: 800px; margin: auto; }
+    h1 { font-size: 28px; color: #1e293b; margin-bottom: 5px; }
+    h2 { font-size: 20px; text-decoration: underline; margin-top: 25px; color: #334155; }
+    p { font-size: 16px; line-height: 1.8; text-align: justify; margin-top: 25px; }
+    .footer { margin-top: 60px; display: flex; justify-content: space-between; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="cert-box">
+    <h1>${comp.name}</h1>
+    <p style="text-align:center; margin:0; font-size:14px;">${comp.address}</p>
+    <h2>${title}</h2>
+    <p>${certText}</p>
+    <p style="text-align:left; font-size:13px; color:#475569;"><strong>Staff Code:</strong> ${staff.empCode} | <strong>Remarks:</strong> ${staff.otherInfo}</p>
+    <div class="footer">
+      <span>Date: ________________</span>
+      <span>Authorized Seal & Signature</span>
+    </div>
+  </div>
+</body>
+</html>`;
+
+      const blob = new Blob([certHTML], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      const cleanName = staff.name.replace(/[^a-zA-Z0-9]/g, "_");
+      link.download = `${staff.empCode}_${cleanName}_${title.replace(/ /g, "_")}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    document.addEventListener("DOMContentLoaded", _BSA_initDashboard);
+  </script>
+</body>
+</html>
+        
+    </div>
    <!-- =============== ----- Mobail View Html Code Stop ------ ============== -- STop XXX --======================== -->
 
 
@@ -3582,9 +4038,72 @@ function csUniquePrint_closeModal() {
  <!-- Master Data =============== ----- BSA School Josan Data Code Start ------ ============== -- Start --======================== -->
 
 
+
+
+ <script>
+    let staffStore = [
+      {
+        "empCode": "DIR01",
+        "name": "MADHU GHILDIYAL",
+        "guardianName": "R.P. Ghildiyal",
+        "maritalStatus": "Married",
+        "mobno": "9389668204",
+        "classTeacher": "School Management",
+        "address": "Kundeshwari Kashipur (U.S.Nagar)",
+        "designation": "Director",
+        "status": "active",
+        "appointmentDate": "2015-04-01",
+        "exitDate": "",
+        "otherInfo": "School Director and Head Administrator managing core institution framework."
+      },
+      {
+        "empCode": "STAFF01",
+        "name": "AAFIYA ANSARI",
+        "guardianName": "Mukhtar Ahamad",
+        "maritalStatus": "Married",
+        "mobno": "9756735792",
+        "classTeacher": "Class 5th-B",
+        "address": "Kundeshwari Kashipur",
+        "designation": "Senior Teacher",
+        "status": "active",
+        "appointmentDate": "2020-07-15",
+        "exitDate": "2025-06-10",
+        "otherInfo": "Lead Science and Mathematics faculty for upper primary wing."
+      },
+      {
+        "empCode": "STAFF02",
+        "name": "SADIK HUSAIN",
+        "guardianName": "Ali Husain",
+        "maritalStatus": "Unmarried",
+        "mobno": "9639012011",
+        "classTeacher": "Class 8th-A",
+        "address": "Shivlalpur Kashipur",
+        "designation": "Assistant Teacher",
+        "status": "active",
+        "appointmentDate": "2022-03-10",
+        "exitDate": "",
+        "otherInfo": "Assigned Class Teacher of 8th-A and Computer instructor."
+      },
+      {
+        "empCode": "STAFF03",
+        "name": "REENA DEVI",
+        "guardianName": "Suresh Kumar",
+        "maritalStatus": "Married",
+        "mobno": "9123456789",
+        "classTeacher": "Class 2nd-A",
+        "address": "Kashipur Main",
+        "designation": "Primary Teacher",
+        "status": "inactive",
+        "appointmentDate": "2018-05-01",
+        "exitDate": "2023-12-31",
+        "otherInfo": "Resigned due to personal relocation."
+      }
+    ];
+    </script>
+
 <script>
  let ERPStore = {
-  "company": {"name":"BABA SCHOLAR\u0027S ACADEMY","address":"kashipur","mobileNo":"78797979","udisecode":"055","stateName":"Uttarakhand","otherdetails":"tushjsgau7b iu    hiu a","bankname":"pnb","cmpaccountno":"453400870000653","branch":"kashipu","ifsc":"punb02"},
+  "company": {"name":"BABA SCHOLAR\u0027S ACADEMY","director":"Madhu Ghildiyal","address":"Kundeshwari Kashipur (U.S.Nagar)","mobileNo":"78797979","udisecode":"0512050010","affno":"RTE65879","stateName":"Uttarakhand","otherdetails":"A Co-Educational Medium School","bankname":"pnb","cmpaccountno":"453400870000653","branch":"kashipu","ifsc":"punb02"},
   "users": [
         {"empCode":"AFI01","userType":"Admin","name":"MUKHTAR AHAMAD","username":"admin","fname":"MUKHTAR","mobno":"9639012011","password":"admin","activationCode":"1001","userAuth":"0","status":"unlocked"},
         {"empCode":"AFI02","userType":"Admin","name":"Madhu Ghildiyal","username":"0","fname":"-","mobno":"9389668204","password":"0","activationCode":"8","userAuth":"0,1,61,62,63","status":"unlocked"},
@@ -3890,7 +4409,7 @@ function csUniquePrint_closeModal() {
           "classes": {
                           "1st": [  ],
                           "UKG - A": [  ],
-                          "4th": [ {"sNo":"46","studentName":"AAFIYA ANSARI","fatherName":"MUKHTAR AHAMAD","motherName":"SHABANA","dob":"23-Feb-2017","penNo":"22481929615","rollNo":"","marks":{"Hindi Literature/Language":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"","tot2":"8"},"English Literature/Language":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"","tot2":"8"},"Mathematics":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"","tot2":"8"},"E.V.S":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"","tot2":"8"},"G.K":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"","tot2":"8"},"Computer":{"cam1":"","t1":"","tot1":"0","cam2":"","t2":"","tot2":"0"},"Sanskrit":{"cam1":"11","t1":"","tot1":"11","cam2":"","t2":"","tot2":"0"}},"activityData":{"homework":"Regular"},"teacherRemarks":""} ]
+                          "4th": [ {"sNo":"46","studentName":"AAFIYA ANSARI","fatherName":"MUKHTAR AHAMAD","motherName":"SHABANA","dob":"23-Feb-2017","penNo":"22481929615","rollNo":"","marks":{"Hindi Literature/Language":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"7","tot2":"15"},"English Literature/Language":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"7","tot2":"15"},"Mathematics":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"7","tot2":"15"},"E.V.S":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"7","tot2":"15"},"G.K":{"cam1":"1","t1":"","tot1":"1","cam2":"8","t2":"76","tot2":"84"},"Computer":{"cam1":"","t1":"","tot1":"0","cam2":"6","t2":"","tot2":"6"},"Sanskrit":{"cam1":"11","t1":"","tot1":"11","cam2":"","t2":"","tot2":"0"}},"activityData":{"homework":"Regular"},"teacherRemarks":""} ]
                       }
       },
       {
