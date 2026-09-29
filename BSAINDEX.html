@@ -2910,9 +2910,22 @@ function switchTab(tabId, element) {
         tbody.innerHTML = '';
         
         let studentList = [];
-        if (currentTCTab === 'exit') {
-            studentList = ERPStore.srragister.filter(st => st.certificateNo && st.certificateNo.toString().trim() !== '');
-        } else {
+           //  if (currentTCTab === 'exit') {
+        //    studentList = ERPStore.srragister.filter(st => st.certificateNo && st.certificateNo.toString().trim() !== '');
+       // }                       without cet no short code
+         
+       // AB (New Code)
+if (currentTCTab === 'exit') {
+    studentList = (ERPStore.srragister || [])
+        .filter(st => st.certificateNo && st.certificateNo.toString().trim() !== '')
+        .sort((a, b) => {
+            return (a.certificateNo || '').toString().localeCompare(
+                (b.certificateNo || '').toString(), 
+                undefined, 
+                { numeric: true, sensitivity: 'base' }
+            );
+        });
+} else {
             studentList = ERPStore.srragister || [];
         }
 
